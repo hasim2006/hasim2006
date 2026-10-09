@@ -329,8 +329,8 @@ def build_water_glass_svg(theme="dark"):
         else:
             svg.append(f'<text x="{438 + line_w + 8}" y="{ly + 3.5}" class="glass-label">{pct}</text>')
 
-    # Glass Base Label
-    svg.append(f'<text x="{gx}" y="486" text-anchor="middle" fill="{chrome_col}" font-size="11" font-weight="700" letter-spacing="1.5">HYDRAULIC CAPACITY: 100 COMMITS</text>')
+    # Glass Base Label inside canvas
+    svg.append(f'<text x="{gx}" y="444" text-anchor="middle" fill="{chrome_col}" font-size="10.5" font-weight="700" letter-spacing="1.5">CAPACITY: 100 COMMITS · 1000ml PYREX</text>')
 
     # =========================================================================
     # RIGHT HALF: HYDRATION & TELEMETRY DASHBOARD
