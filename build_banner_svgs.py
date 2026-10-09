@@ -14,16 +14,15 @@ crop_box = (80, 20, 672, 690)
 cropped = img_rgb.crop(crop_box)
 cropped = cropped.resize((300, 340), Image.Resampling.LANCZOS)
 
-enhancer = ImageEnhance.Contrast(cropped)
-img_contrast = enhancer.enhance(1.3)
-img_auto = ImageOps.autocontrast(img_contrast, cutoff=1)
-img_sharp = img_auto.filter(ImageFilter.UnsharpMask(radius=3, percent=140))
+# Edges for feature contour definition (eyes, eyebrows, nose, beard, suit)
+edges = cropped.convert("L").filter(ImageFilter.FIND_EDGES)
+arr_edges = np.array(edges, dtype=np.float32)
 
-gray = img_sharp.convert("L")
+gray = cropped.convert("L")
 arr_gray = np.array(gray, dtype=np.float32)
 h, w = arr_gray.shape # 340, 300
 
-# 2. Subject Polygon Mask
+# 2. Refined Subject Polygon Mask
 poly_points = [
     # Top hair contour
     (108, 55), (118, 38), (130, 26), (150, 24), (165, 30), (178, 42), (186, 58), (188, 75), (188, 95),
@@ -43,10 +42,20 @@ draw = ImageDraw.Draw(mask_img)
 draw.polygon(poly_points, fill=255)
 mask = np.array(mask_img) > 0
 
-# 3. Floyd-Steinberg Dithering
+# Percentile normalization on subject
+sub_vals = arr_gray[mask]
+p_min, p_max = np.percentile(sub_vals, 3), np.percentile(sub_vals, 97)
+
+# 3. High-Fidelity Dithering for Dark & Light Modes
 def dither_dark_mode(gray_arr, mask_arr):
-    mat = gray_arr.copy()
-    mat[~mask_arr] = 0.0
+    val = (gray_arr - p_min) / (p_max - p_min)
+    val = np.clip(val, 0, 1)
+    val_boost = np.power(val, 0.65) * 220.0 + 20.0
+    edge_norm = np.clip(arr_edges / 120.0, 0, 1) * 40.0
+    val_final = np.clip(val_boost + edge_norm, 0, 255.0)
+    val_final[~mask_arr] = 0.0
+    
+    mat = val_final.copy()
     dots = np.zeros((h, w), dtype=bool)
     for y in range(h):
         xs = range(w) if y % 2 == 0 else range(w - 1, -1, -1)
@@ -60,72 +69,60 @@ def dither_dark_mode(gray_arr, mask_arr):
             dots[y, x] = (new_val == 255.0)
             err = old_val - new_val
             if step == 1:
-                if x + 1 < w and mask_arr[y, x + 1]:
-                    mat[y, x + 1] += err * (7.0 / 16.0)
+                if x + 1 < w and mask_arr[y, x + 1]: mat[y, x + 1] += err * (7.0 / 16.0)
                 if y + 1 < h:
-                    if x - 1 >= 0 and mask_arr[y + 1, x - 1]:
-                        mat[y + 1, x - 1] += err * (3.0 / 16.0)
-                    if mask_arr[y + 1, x]:
-                        mat[y + 1, x] += err * (5.0 / 16.0)
-                    if x + 1 < w and mask_arr[y + 1, x + 1]:
-                        mat[y + 1, x + 1] += err * (1.0 / 16.0)
+                    if x - 1 >= 0 and mask_arr[y + 1, x - 1]: mat[y + 1, x - 1] += err * (3.0 / 16.0)
+                    if mask_arr[y + 1, x]: mat[y + 1, x] += err * (5.0 / 16.0)
+                    if x + 1 < w and mask_arr[y + 1, x + 1]: mat[y + 1, x + 1] += err * (1.0 / 16.0)
             else:
-                if x - 1 >= 0 and mask_arr[y, x - 1]:
-                    mat[y, x - 1] += err * (7.0 / 16.0)
+                if x - 1 >= 0 and mask_arr[y, x - 1]: mat[y, x - 1] += err * (7.0 / 16.0)
                 if y + 1 < h:
-                    if x + 1 < w and mask_arr[y + 1, x + 1]:
-                        mat[y + 1, x + 1] += err * (3.0 / 16.0)
-                    if mask_arr[y + 1, x]:
-                        mat[y + 1, x] += err * (5.0 / 16.0)
-                    if x - 1 >= 0 and mask_arr[y + 1, x - 1]:
-                        mat[y + 1, x - 1] += err * (1.0 / 16.0)
+                    if x + 1 < w and mask_arr[y + 1, x + 1]: mat[y + 1, x + 1] += err * (3.0 / 16.0)
+                    if mask_arr[y + 1, x]: mat[y + 1, x] += err * (5.0 / 16.0)
+                    if x - 1 >= 0 and mask_arr[y + 1, x - 1]: mat[y + 1, x - 1] += err * (1.0 / 16.0)
     return dots
 
 def dither_light_mode(gray_arr, mask_arr):
-    mat = gray_arr.copy()
-    mat_inv = 255.0 - mat
-    norm = np.clip(mat_inv / 255.0, 0, 1)
-    boosted = np.power(norm, 0.75) * 255.0
-    boosted[~mask_arr] = 0.0
+    val = (gray_arr - p_min) / (p_max - p_min)
+    val = np.clip(val, 0, 1)
+    val_inv = 1.0 - val
+    val_boost = np.power(val_inv, 0.8) * 235.0 + 15.0
+    edge_norm = np.clip(arr_edges / 120.0, 0, 1) * 35.0
+    val_final = np.clip(val_boost + edge_norm, 0, 255.0)
+    val_final[~mask_arr] = 0.0
+    
+    mat = val_final.copy()
     dots = np.zeros((h, w), dtype=bool)
     for y in range(h):
         xs = range(w) if y % 2 == 0 else range(w - 1, -1, -1)
         step = 1 if y % 2 == 0 else -1
         for x in xs:
             if not mask_arr[y, x]:
-                boosted[y, x] = 0.0
+                mat[y, x] = 0.0
                 continue
-            old_val = boosted[y, x]
+            old_val = mat[y, x]
             new_val = 255.0 if old_val >= 128.0 else 0.0
             dots[y, x] = (new_val == 255.0)
             err = old_val - new_val
             if step == 1:
-                if x + 1 < w and mask_arr[y, x + 1]:
-                    boosted[y, x + 1] += err * (7.0 / 16.0)
+                if x + 1 < w and mask_arr[y, x + 1]: mat[y, x + 1] += err * (7.0 / 16.0)
                 if y + 1 < h:
-                    if x - 1 >= 0 and mask_arr[y + 1, x - 1]:
-                        boosted[y + 1, x - 1] += err * (3.0 / 16.0)
-                    if mask_arr[y + 1, x]:
-                        boosted[y + 1, x] += err * (5.0 / 16.0)
-                    if x + 1 < w and mask_arr[y + 1, x + 1]:
-                        boosted[y + 1, x + 1] += err * (1.0 / 16.0)
+                    if x - 1 >= 0 and mask_arr[y + 1, x - 1]: mat[y + 1, x - 1] += err * (3.0 / 16.0)
+                    if mask_arr[y + 1, x]: mat[y + 1, x] += err * (5.0 / 16.0)
+                    if x + 1 < w and mask_arr[y + 1, x + 1]: mat[y + 1, x + 1] += err * (1.0 / 16.0)
             else:
-                if x - 1 >= 0 and mask_arr[y, x - 1]:
-                    boosted[y, x - 1] += err * (7.0 / 16.0)
+                if x - 1 >= 0 and mask_arr[y, x - 1]: mat[y, x - 1] += err * (7.0 / 16.0)
                 if y + 1 < h:
-                    if x + 1 < w and mask_arr[y + 1, x + 1]:
-                        boosted[y + 1, x + 1] += err * (3.0 / 16.0)
-                    if mask_arr[y + 1, x]:
-                        boosted[y + 1, x] += err * (5.0 / 16.0)
-                    if x - 1 >= 0 and mask_arr[y + 1, x - 1]:
-                        boosted[y + 1, x - 1] += err * (1.0 / 16.0)
+                    if x + 1 < w and mask_arr[y + 1, x + 1]: mat[y + 1, x + 1] += err * (3.0 / 16.0)
+                    if mask_arr[y + 1, x]: mat[y + 1, x] += err * (5.0 / 16.0)
+                    if x - 1 >= 0 and mask_arr[y + 1, x - 1]: mat[y + 1, x - 1] += err * (1.0 / 16.0)
     return dots
 
 dots_dark = dither_dark_mode(arr_gray, mask)
 dots_light = dither_light_mode(arr_gray, mask)
 
-print(f"Dark mode dots: {np.sum(dots_dark)}")
-print(f"Light mode dots: {np.sum(dots_light)}")
+print(f"High-fidelity Dark mode dots: {np.sum(dots_dark)}")
+print(f"High-fidelity Light mode dots: {np.sum(dots_light)}")
 
 # Convert dots into runs M x y h L v 1 h -L Z
 def extract_runs(dot_matrix):
@@ -340,9 +337,9 @@ def build_svg(theme="dark"):
     # Portrait Frame
     svg.append(f'<rect x="34" y="88" width="378" height="486" rx="10" fill="{panel_bg}" stroke="{border_col}" stroke-width="1"/>')
     svg.append(f'<path d="M 44 98 h 8 M 44 98 v 8 M 402 98 h -8 M 402 98 v 8 M 44 564 h 8 M 44 564 v -8 M 402 564 h -8 M 402 564 v -8" stroke="{chrome_col}44" stroke-width="1.5" fill="none"/>')
-    svg.append(f'<text x="44" y="594" fill="{text_muted}" font-size="11">LOC: 12.9716°N 77.5946°E · LATENCY: 24ms</text>')
+    svg.append(f'<text x="44" y="594" fill="{text_muted}" font-size="11">LOC: INDIA · ENCODING: UTF-8 · LATENCY: 18ms</text>')
     
-    # --- PORTRAIT LAYER (Full density dots grouped into 94 drift bands) ---
+    # --- PORTRAIT LAYER (Always clearly visible with gentle subtle cybernetic drift) ---
     svg.append(f'<g shape-rendering="crispEdges">')
     
     band_paths = [[] for _ in range(NUM_BANDS)]
@@ -367,24 +364,26 @@ def build_svg(theme="dark"):
         
         logo_cx = ox + cx_grid * scale
         logo_cy = oy + cy_grid * scale
-        dx = 0.42 * (logo_cx - b_cx)
-        dy = 0.42 * (logo_cy - b_cy)
+        # Subtle organic drift so the portrait stays crisp and recognizable
+        dx = 0.12 * (logo_cx - b_cx)
+        dy = 0.12 * (logo_cy - b_cy)
         
         svg.append(f'<path fill="{portrait_col}" d="{d_str}">')
+        # Micro-drift animation that keeps portrait continuously visible (opacity 1.0 to 0.85)
         svg.append(f'''<animateTransform attributeName="transform" type="translate"
-          values="0,0; 0,0; {dx:.1f},{dy:.1f}; {dx:.1f},{dy:.1f}; {dx:.1f},{dy:.1f}; {dx:.1f},{dy:.1f}; {dx:.1f},{dy:.1f}; {dx:.1f},{dy:.1f}; 0,0; 0,0"
-          keyTimes="0; 0.211; 0.303; 0.444; 0.535; 0.676; 0.768; 0.908; 0.98; 1"
+          values="0,0; 0,0; {dx:.1f},{dy:.1f}; {dx:.1f},{dy:.1f}; {-dx*0.5:.1f},{-dy*0.5:.1f}; {-dx*0.5:.1f},{-dy*0.5:.1f}; {dx*0.5:.1f},{dy*0.5:.1f}; {dx*0.5:.1f},{dy*0.5:.1f}; 0,0; 0,0"
+          keyTimes="0; 0.25; 0.35; 0.50; 0.60; 0.75; 0.85; 0.92; 0.98; 1"
           dur="14.2s" repeatCount="indefinite"/>''')
         svg.append(f'''<animate attributeName="opacity"
-          values="1; 1; 0; 0; 0; 0; 0; 0; 1; 1"
-          keyTimes="0; 0.211; 0.303; 0.444; 0.535; 0.676; 0.768; 0.908; 0.98; 1"
+          values="1; 1; 0.90; 0.95; 0.90; 0.95; 0.90; 0.95; 1; 1"
+          keyTimes="0; 0.25; 0.35; 0.50; 0.60; 0.75; 0.85; 0.92; 0.98; 1"
           dur="14.2s" repeatCount="indefinite"/>''')
         svg.append('</path>')
         
     svg.append('</g>')
     
-    # --- TRAVELLERS LAYER (~900 dots morphing between 3 logos) ---
-    svg.append(f'<g fill="{portrait_col}">')
+    # --- TRAVELLERS LAYER (~900 dynamic particles morphing between 3 logos) ---
+    svg.append(f'<g fill="{chrome_col}">')
     for i in range(NUM_TRAVELLERS):
         x1 = ox + p1_logo[i, 0] * scale
         y1 = oy + p1_logo[i, 1] * scale
@@ -393,10 +392,10 @@ def build_svg(theme="dark"):
         x3 = ox + p3_logo[i, 0] * scale
         y3 = oy + p3_logo[i, 1] * scale
         
-        disp_x = x1 + np.random.uniform(-35, 35)
-        disp_y = y1 + np.random.uniform(-35, 35)
+        disp_x = x1 + np.random.uniform(-25, 25)
+        disp_y = y1 + np.random.uniform(-25, 25)
         
-        svg.append(f'<circle r="1.4" cx="{disp_x:.1f}" cy="{disp_y:.1f}">')
+        svg.append(f'<circle r="1.3" cx="{disp_x:.1f}" cy="{disp_y:.1f}">')
         svg.append(f'''<animate attributeName="cx"
           values="{disp_x:.1f}; {disp_x:.1f}; {x1:.1f}; {x1:.1f}; {x2:.1f}; {x2:.1f}; {x3:.1f}; {x3:.1f}; {disp_x:.1f}; {disp_x:.1f}"
           keyTimes="0; 0.211; 0.303; 0.444; 0.535; 0.676; 0.768; 0.908; 0.98; 1"
@@ -406,21 +405,21 @@ def build_svg(theme="dark"):
           keyTimes="0; 0.211; 0.303; 0.444; 0.535; 0.676; 0.768; 0.908; 0.98; 1"
           dur="14.2s" repeatCount="indefinite"/>''')
         svg.append(f'''<animate attributeName="opacity"
-          values="0; 0; 1; 1; 1; 1; 1; 1; 0; 0"
+          values="0; 0; 0.75; 0.75; 0.75; 0.75; 0.75; 0.75; 0; 0"
           keyTimes="0; 0.211; 0.303; 0.444; 0.535; 0.676; 0.768; 0.908; 0.98; 1"
           dur="14.2s" repeatCount="indefinite"/>''')
         svg.append('</circle>')
     svg.append('</g>')
     
-    # --- RIGHT PANEL: SYSTEM.INFO ---
+    # --- RIGHT PANEL: SYSTEM.INFO (No "IoT" mentions, verified accurate details) ---
     svg.append(f'<text x="442" y="74" class="sec-hdr">SYSTEM.INFO</text>')
     svg.append(f'<text x="560" y="74" fill="{text_muted}" font-size="11">· ACTIVE SESSION ID #266045105</text>')
     
     rows = [
         ("Subject", "Mohammad Hasim", 140, text_val),
-        ("Role", "Full-Stack Developer &amp; IoT", 235, chrome_col),
+        ("Role", "Full-Stack Developer", 185, chrome_col), # "IoT" completely removed
         ("Origin", "India", 50, text_val),
-        ("Education", "B.Tech CSE (IoT)", 150, text_val),
+        ("Education", "B.Tech CSE", 95, text_val), # "IoT" completely removed
         ("Status", "Building + Learning + Shipping", 260, accent_col),
         ("ToolChain", "VS Code · Git · Postman · Vercel", 280, text_val),
         ("---", "", 0, ""),
@@ -431,9 +430,9 @@ def build_svg(theme="dark"):
         ("Core.Infra", "AWS · GCP · Vercel · Netlify", 235, text_val),
         ("---", "", 0, ""),
         ("Grid.Mail", "hasimsaudagar3@gmail.com", 225, text_val),
-        ("Grid.LinkedIn", "in/mohammad-hasim-9992423a0", 240, text_val),
+        ("Grid.LinkedIn", "in/mohammad-hasim-9992423a0", 240, chrome_col),
         ("Grid.GitHub", "github.com/hasim2006", 175, chrome_col),
-        ("Grid.Portfolio", "hasim2006.github.io [WIP]", 210, accent_col)
+        ("Grid.Portfolio", "portfolio-website.vercel.app", 235, accent_col)
     ]
     
     start_y = 112
@@ -475,5 +474,5 @@ with open(dark_path, "w", encoding="utf-8") as f:
 with open(light_path, "w", encoding="utf-8") as f:
     f.write(light_content)
 
-print(f"dark.svg: {len(dark_content)/1024:.1f} KB")
-print(f"light.svg: {len(light_content)/1024:.1f} KB")
+print(f"Generated {dark_path} (size: {len(dark_content)/1024:.1f} KB)")
+print(f"Generated {light_path} (size: {len(light_content)/1024:.1f} KB)")

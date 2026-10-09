@@ -9,7 +9,7 @@
   <br/><br/>
 
   <!-- PHASE 4: Clickable Social Badges -->
-  <a href="https://www.linkedin.com/in/mohammad-hasim-9992423a0/">
+  <a href="https://www.linkedin.com/in/mohammad-hasim-9992423a0/" target="_blank">
     <img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
   </a>
   &nbsp;&nbsp;
@@ -17,7 +17,7 @@
     <img src="https://img.shields.io/badge/Email-0A101F?style=for-the-badge&logo=gmail&logoColor=10B981&labelColor=0A101F" alt="Email" />
   </a>
   &nbsp;&nbsp;
-  <a href="https://github.com/hasim2006">
+  <a href="https://portfolio-website-main-livid-theta.vercel.app/" target="_blank">
     <img src="https://img.shields.io/badge/Portfolio-0A101F?style=for-the-badge&logo=safari&logoColor=22D3EE&labelColor=0A101F" alt="Portfolio" />
   </a>
 
