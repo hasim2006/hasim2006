@@ -108,16 +108,16 @@ re_path_d = tree_re.getroot().find('{http://www.w3.org/2000/svg}path').attrib['d
 tree_js = ET.parse(os.path.join(scratch_dir, "javascript.svg"))
 js_path_d = tree_js.getroot().find('{http://www.w3.org/2000/svg}path').attrib['d']
 
-# 3. Ambient Floating Particles for Tech Atmosphere
+# 3. Ambient Floating Particles for Tech Atmosphere (Centered around cx=590, cy=270)
 NUM_PARTICLES = 160
 np.random.seed(42)
 particles = []
-cx_box, cy_box = 223.0, 360.0
+cx_center, cy_center = 590.0, 270.0
 for i in range(NUM_PARTICLES):
     angle = np.random.uniform(0, 2 * math.pi)
-    dist = np.random.uniform(35, 145)
-    px = cx_box + dist * math.cos(angle)
-    py = cy_box + dist * math.sin(angle)
+    dist = np.random.uniform(35, 160)
+    px = cx_center + dist * math.cos(angle)
+    py = cy_center + dist * math.sin(angle)
     r = np.random.uniform(1.0, 2.2)
     dx = np.random.uniform(-20, 20)
     dy = np.random.uniform(-20, 20)
@@ -134,42 +134,22 @@ def build_banner_svg(theme="dark"):
     text_muted = "#64748B"
     text_label = "#94A3B8" if is_dark else "#475569"
     text_val = "#F8FAFC" if is_dark else "#0F172A"
-    leader_col = "#334155" if is_dark else "#E2E8F0"
     
     runs = runs_dark if is_dark else runs_light
     
-    # Scale and center photo in the left area (seamlessly merged, NO inner box)
+    # Scale and center photo in the center stage
     scale = 1.14
     photo_w = 300 * scale # 342
     photo_h = 340 * scale # 387.6
-    ox = 34 + (378 - photo_w) / 2 # 52.0
-    oy = 136 + (450 - photo_h) / 2 # 167.2
+    ox = cx_center - photo_w / 2 # 419.0
+    oy = cy_center - photo_h / 2 + 10 # 86.2
     
     svg = []
-    svg.append('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 625" width="100%" height="100%">')
+    svg.append('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 540" width="100%" height="100%">')
     svg.append('<defs>')
     
     # Gradients & Filters
     svg.append('''
-      <!-- Dynamic Transition Gradient for Name: Cycles smoothly between Cyan, Violet, Emerald, Gold -->
-      <linearGradient id="nameGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-        <stop offset="0%" stop-color="#22D3EE">
-          <animate attributeName="stop-color"
-            values="#22D3EE; #A78BFA; #10B981; #FACC15; #22D3EE"
-            dur="6s" repeatCount="indefinite"/>
-        </stop>
-        <stop offset="50%" stop-color="#A78BFA">
-          <animate attributeName="stop-color"
-            values="#A78BFA; #10B981; #FACC15; #22D3EE; #A78BFA"
-            dur="6s" repeatCount="indefinite"/>
-        </stop>
-        <stop offset="100%" stop-color="#10B981">
-          <animate attributeName="stop-color"
-            values="#10B981; #FACC15; #22D3EE; #A78BFA; #10B981"
-            dur="6s" repeatCount="indefinite"/>
-        </stop>
-      </linearGradient>
-
       <linearGradient id="pyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
         <stop offset="0%" stop-color="#38BDF8"/>
         <stop offset="48%" stop-color="#38BDF8"/>
@@ -186,21 +166,25 @@ def build_banner_svg(theme="dark"):
       </linearGradient>
       <linearGradient id="scanGrad" x1="0%" y1="0%" x2="0%" y2="100%">
         <stop offset="0%" stop-color="#22D3EE" stop-opacity="0"/>
-        <stop offset="50%" stop-color="#22D3EE" stop-opacity="0.35"/>
+        <stop offset="50%" stop-color="#22D3EE" stop-opacity="0.4"/>
         <stop offset="100%" stop-color="#22D3EE" stop-opacity="0"/>
       </linearGradient>
       <radialGradient id="haloGlow" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="#22D3EE" stop-opacity="0.18"/>
-        <stop offset="70%" stop-color="#22D3EE" stop-opacity="0.04"/>
+        <stop offset="0%" stop-color="#22D3EE" stop-opacity="0.22"/>
+        <stop offset="70%" stop-color="#22D3EE" stop-opacity="0.05"/>
         <stop offset="100%" stop-color="#22D3EE" stop-opacity="0"/>
       </radialGradient>
       <radialGradient id="pyGlow" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="#FACC15" stop-opacity="0.15"/>
+        <stop offset="0%" stop-color="#FACC15" stop-opacity="0.18"/>
         <stop offset="100%" stop-color="#38BDF8" stop-opacity="0"/>
       </radialGradient>
       <radialGradient id="jsGlow" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="#F59E0B" stop-opacity="0.2"/>
+        <stop offset="0%" stop-color="#F59E0B" stop-opacity="0.22"/>
         <stop offset="100%" stop-color="#FBBF24" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="hudGlow" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#22D3EE" stop-opacity="0.08"/>
+        <stop offset="100%" stop-color="#22D3EE" stop-opacity="0"/>
       </radialGradient>
     ''')
     
@@ -217,123 +201,126 @@ def build_banner_svg(theme="dark"):
       .live-text {{ fill: #EF4444; font-size: 12px; font-weight: 700; }}
       .pill-bg {{ fill: {chrome_col}1F; stroke: {chrome_col}; stroke-width: 1; }}
       .pill-text {{ fill: {chrome_col}; font-size: 13px; font-weight: 600; }}
-      .sec-hdr {{ fill: {chrome_col}; font-size: 13px; font-weight: 700; letter-spacing: 1.5px; }}
-      .row-lbl {{ fill: {text_label}; font-size: 14px; font-weight: 500; }}
-      .row-val {{ fill: {text_val}; font-size: 14px; font-weight: 600; }}
-      .leader {{ stroke: {leader_col}; stroke-dasharray: 2 4; stroke-width: 1.2; }}
-      .accent {{ fill: {accent_col}; }}
-      @keyframes wave-hand {{
-        0% {{ transform: rotate(0deg); }}
-        15% {{ transform: rotate(24deg); }}
-        30% {{ transform: rotate(-10deg); }}
-        45% {{ transform: rotate(22deg); }}
-        60% {{ transform: rotate(-6deg); }}
-        75% {{ transform: rotate(12deg); }}
-        100% {{ transform: rotate(0deg); }}
-      }}
-      .wave-hand {{
-        transform-origin: 172px 78px;
-        animation: wave-hand 2.2s infinite ease-in-out;
-      }}
+      .sec-hdr {{ fill: {chrome_col}; font-size: 12px; font-weight: 700; letter-spacing: 1.5px; }}
+      .hud-title {{ fill: {text_label}; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; }}
+      .hud-val {{ fill: {text_val}; font-size: 12px; font-weight: 600; }}
+      .hud-sub {{ fill: {text_muted}; font-size: 10px; }}
+      .vertex-mark {{ fill: {chrome_col}; }}
+      .vertex-coord {{ fill: {chrome_col}88; font-size: 9px; font-family: monospace; }}
+      .bracket {{ stroke: {chrome_col}; stroke-width: 2; fill: none; }}
     ''')
     svg.append('</style>')
     svg.append('</defs>')
     
-    # 1. Main Background Card
-    svg.append(f'<rect width="1180" height="625" rx="14" fill="{bg_col}" stroke="{border_col}" stroke-width="1.5"/>')
+    # 1. Main Background Card (Merged with background color, transparent / same color)
+    svg.append(f'<rect width="1180" height="540" rx="12" fill="{bg_col}" stroke="{border_col}" stroke-width="1.2"/>')
     
-    # Header Chrome Bar (y=0..44)
-    svg.append(f'<line x1="0" y1="44" x2="1180" y2="44" stroke="{border_col}" stroke-width="1"/>')
-    svg.append('<circle cx="26" cy="22" r="5.5" class="traffic-red"/>')
-    svg.append('<circle cx="44" cy="22" r="5.5" class="traffic-yellow"/>')
-    svg.append('<circle cx="62" cy="22" r="5.5" class="traffic-green"/>')
-    svg.append('<text x="590" y="27" text-anchor="middle" class="title">terminal // hasim@dev:~$</text>')
+    # =========================================================================
+    # CORNERS, EDGES & VERTICES (Requested: corners and edges with vertices)
+    # =========================================================================
+    # Tech vertices & brackets at 4 corners
+    svg.append(f'''
+    <!-- Vertices & Corner Brackets -->
+    <g>
+      <!-- Vertex 1: Top-Left (20, 20) -->
+      <path d="M 20 54 V 20 H 54" class="bracket"/>
+      <circle cx="20" cy="20" r="3.5" class="vertex-mark"/>
+      <text x="28" y="32" class="vertex-coord">V1 [0,0]</text>
+      
+      <!-- Vertex 2: Top-Right (1160, 20) -->
+      <path d="M 1160 54 V 20 H 1126" class="bracket"/>
+      <circle cx="1160" cy="20" r="3.5" class="vertex-mark"/>
+      <text x="1100" y="32" class="vertex-coord">V2 [1180,0]</text>
+      
+      <!-- Vertex 3: Bottom-Left (20, 520) -->
+      <path d="M 20 486 V 520 H 54" class="bracket"/>
+      <circle cx="20" cy="520" r="3.5" class="vertex-mark"/>
+      <text x="28" y="512" class="vertex-coord">V3 [0,540]</text>
+      
+      <!-- Vertex 4: Bottom-Right (1160, 520) -->
+      <path d="M 1160 486 V 520 H 1126" class="bracket"/>
+      <circle cx="1160" cy="520" r="3.5" class="vertex-mark"/>
+      <text x="1080" y="512" class="vertex-coord">V4 [1180,540]</text>
+      
+      <!-- Midpoint Crosshair Vertices (+) -->
+      <g stroke="{chrome_col}88" stroke-width="1">
+        <!-- Top Edge Crosshair -->
+        <line x1="590" y1="14" x2="590" y2="26"/>
+        <line x1="584" y1="20" x2="596" y2="20"/>
+        
+        <!-- Bottom Edge Crosshair -->
+        <line x1="590" y1="514" x2="590" y2="526"/>
+        <line x1="584" y1="520" x2="596" y2="520"/>
+        
+        <!-- Left Edge Crosshair -->
+        <line x1="14" y1="270" x2="26" y2="270"/>
+        <line x1="20" y1="264" x2="20" y2="276"/>
+        
+        <!-- Right Edge Crosshair -->
+        <line x1="1154" y1="270" x2="1166" y2="270"/>
+        <line x1="1160" y1="264" x2="1160" y2="276"/>
+      </g>
+    </g>
+    ''')
+    
+    # Top Chrome Header Bar
+    svg.append(f'<line x1="20" y1="44" x2="1160" y2="44" stroke="{border_col}" stroke-width="1"/>')
+    svg.append('<circle cx="44" cy="32" r="5" class="traffic-red"/>')
+    svg.append('<circle cx="60" cy="32" r="5" class="traffic-yellow"/>')
+    svg.append('<circle cx="76" cy="32" r="5" class="traffic-green"/>')
+    svg.append('<text x="590" y="36" text-anchor="middle" class="title">terminal // visual.core --stream</text>')
     
     # LIVE indicator
     svg.append('<g>')
-    svg.append('<circle cx="1004" cy="22" r="4.5" class="live-dot">')
+    svg.append('<circle cx="1010" cy="32" r="4" class="live-dot">')
     svg.append('<animate attributeName="opacity" values="1;0.2;1" dur="1.8s" repeatCount="indefinite"/>')
     svg.append('</circle>')
-    svg.append('<text x="1016" y="26" class="live-text">LIVE</text>')
+    svg.append('<text x="1022" y="36" class="live-text">LIVE</text>')
     svg.append('</g>')
     
     # User Handle Pill
     svg.append('<g>')
-    svg.append('<rect x="1066" y="10" width="98" height="24" rx="12" class="pill-bg"/>')
-    svg.append('<text x="1115" y="26" text-anchor="middle" class="pill-text">@hasim2006</text>')
+    svg.append('<rect x="1066" y="20" width="88" height="24" rx="12" class="pill-bg"/>')
+    svg.append('<text x="1110" y="36" text-anchor="middle" class="pill-text">@hasim2006</text>')
     svg.append('</g>')
     
     # =========================================================================
-    # HERO GREETING SECTION (Requested: "Hi there 👋 I'm Mohammad Hasim" with visible transition)
+    # CENTER STAGE: DYNAMIC VISUAL CORE (Photo & Sequential Tech Logos)
     # =========================================================================
-    svg.append(f'<line x1="0" y1="102" x2="1180" y2="102" stroke="{border_col}" stroke-width="1"/>')
+    svg.append(f'<circle cx="{cx_center}" cy="{cy_center}" r="170" fill="url(#hudGlow)"/>')
+    svg.append(f'<circle cx="{cx_center}" cy="{cy_center}" r="160" stroke="{border_col}" stroke-width="1" stroke-dasharray="4 6" fill="none"/>')
+    svg.append(f'<circle cx="{cx_center}" cy="{cy_center}" r="185" stroke="{chrome_col}22" stroke-width="1" stroke-dasharray="2 10" fill="none"/>')
     
-    # Terminal Prompt & Greeting
+    # Phase Subtitle above Center Stage (y=72)
     svg.append(f'''
-    <!-- Terminal Prompt & Greeting -->
-    <g>
-      <!-- Green CLI prompt symbol -->
-      <text x="36" y="78" font-size="22" font-weight="700" fill="#10B981">&gt;</text>
-      <!-- Static greeting text -->
-      <text x="56" y="78" font-size="21" font-weight="700" fill="{text_val}">Hi there </text>
-      
-      <!-- Animated Waving Hand Emoji -->
-      <text x="160" y="78" font-size="22" class="wave-hand">👋</text>
-      
-      <text x="194" y="78" font-size="21" font-weight="500" fill="{text_muted}"> I&apos;m </text>
-      
-      <!-- Mohammad Hasim with Dynamic Glowing Gradient Transition -->
-      <text x="246" y="78" font-size="22" font-weight="800" fill="url(#nameGrad)" letter-spacing="0.5">
-        Mohammad Hasim
-        <animate attributeName="opacity" values="0.85; 1; 0.85" dur="2.5s" repeatCount="indefinite"/>
-      </text>
-    </g>
-    
-    <!-- Top Right Role & Status Badge -->
-    <g>
-      <rect x="888" y="60" width="256" height="28" rx="6" fill="{chrome_col}15" stroke="{chrome_col}55" stroke-width="1"/>
-      <circle cx="904" cy="74" r="4" fill="#10B981">
-        <animate attributeName="opacity" values="1; 0.3; 1" dur="2s" repeatCount="indefinite"/>
-      </circle>
-      <text x="918" y="78" fill="{chrome_col}" font-size="11.5" font-weight="700" letter-spacing="1">FULL-STACK &amp; AI DEVELOPER</text>
-    </g>
-    ''')
-    
-    # =========================================================================
-    # LEFT PANEL: VISUAL.MAP (Photo & Sequential Tech Logos - MERGED WITH BG, NO BOX)
-    # =========================================================================
-    svg.append(f'<text x="36" y="126" class="sec-hdr">VISUAL.MAP</text>')
-    
-    # Dynamic Phase Subtitle at Header (Changes with active sequence)
-    svg.append(f'''
-    <g font-size="11" fill="{text_muted}">
+    <g font-size="12" font-weight="700" letter-spacing="1.5" text-anchor="middle">
       <!-- Subtitle 0: Photo -->
-      <text x="145" y="126">
-        · PORTRAIT.ID // MOHAMMAD HASIM
+      <text x="{cx_center}" y="74" fill="{chrome_col}">
+        VISUAL.CORE · [00] // PORTRAIT.ID // MOHAMMAD HASIM
         <animate attributeName="opacity"
           values="1; 1; 0; 0; 0; 0; 0; 0; 1; 1"
           keyTimes="0; 0.233; 0.261; 0.480; 0.720; 0.940; 0.961; 0.989; 1; 1"
           dur="18s" repeatCount="indefinite"/>
       </text>
       <!-- Subtitle 1: Python -->
-      <text x="145" y="126" fill="#38BDF8">
-        · CORE.STACK [01/03] // PYTHON
+      <text x="{cx_center}" y="74" fill="#38BDF8">
+        VISUAL.CORE · [01/03] // PYTHON 3.12 AI STACK
         <animate attributeName="opacity"
           values="0; 0; 1; 1; 0; 0; 0; 0"
           keyTimes="0; 0.250; 0.278; 0.472; 0.500; 0.750; 0.950; 1"
           dur="18s" repeatCount="indefinite"/>
       </text>
       <!-- Subtitle 2: React -->
-      <text x="145" y="126" fill="#22D3EE">
-        · CORE.STACK [02/03] // REACT
+      <text x="{cx_center}" y="74" fill="#22D3EE">
+        VISUAL.CORE · [02/03] // REACT 18 NEXT.JS ECOSYSTEM
         <animate attributeName="opacity"
           values="0; 0; 1; 1; 0; 0; 0; 0"
           keyTimes="0; 0.489; 0.517; 0.711; 0.739; 0.850; 0.950; 1"
           dur="18s" repeatCount="indefinite"/>
       </text>
       <!-- Subtitle 3: JavaScript -->
-      <text x="145" y="126" fill="#FBBF24">
-        · CORE.STACK [03/03] // JAVASCRIPT
+      <text x="{cx_center}" y="74" fill="#FBBF24">
+        VISUAL.CORE · [03/03] // JAVASCRIPT &amp; NODE.JS RUNTIME
         <animate attributeName="opacity"
           values="0; 0; 1; 1; 0; 0; 0; 0"
           keyTimes="0; 0.728; 0.756; 0.944; 0.972; 0.980; 0.990; 1"
@@ -342,17 +329,11 @@ def build_banner_svg(theme="dark"):
     </g>
     ''')
     
-    # Vertical Dotted Divider separating Left & Right panels (Natural & open layout)
-    svg.append(f'<line x1="424" y1="106" x2="424" y2="598" stroke="{border_col}" stroke-dasharray="3 4" stroke-width="1.2"/>')
+    # Clip-path for center stage to keep scanner clean
+    svg.append(f'<clipPath id="centerClip"><rect x="{cx_center - 180}" y="80" width="360" height="395" rx="10"/></clipPath>')
+    svg.append('<g clip-path="url(#centerClip)">')
     
-    # Clip-path to keep scanner & visuals within bounds without any box stroke/fill
-    svg.append('<clipPath id="panelClip"><rect x="30" y="132" width="388" height="465" rx="8"/></clipPath>')
-    svg.append('<g clip-path="url(#panelClip)">')
-    
-    # =========================================================================
-    # LAYER 1: FULL USER PHOTO (Dithered with pure photographic completeness)
-    # Active: 0s - 4.5s & 17.5s - 18s
-    # =========================================================================
+    # LAYER 1: FULL USER PHOTO
     svg.append('<g id="layer-photo">')
     svg.append('''
       <animate attributeName="opacity"
@@ -374,16 +355,13 @@ def build_banner_svg(theme="dark"):
     
     # Cybernetic Scanner Line across the photo
     svg.append(f'''
-      <rect x="44" y="140" width="358" height="28" fill="url(#scanGrad)" opacity="0.75">
-        <animate attributeName="y" values="140; 540; 140" dur="4.2s" repeatCount="indefinite"/>
+      <rect x="{cx_center - 170}" y="85" width="340" height="28" fill="url(#scanGrad)" opacity="0.8">
+        <animate attributeName="y" values="85; 450; 85" dur="4.2s" repeatCount="indefinite"/>
       </rect>
     ''')
     svg.append('</g>') # End layer-photo
     
-    # =========================================================================
-    # LAYER 2: PYTHON LOGO (Official Dual-Snake Emblem)
-    # Active: 4.5s - 9.0s
-    # =========================================================================
+    # LAYER 2: PYTHON LOGO
     svg.append('<g id="layer-python">')
     svg.append('''
       <animate attributeName="opacity"
@@ -392,26 +370,23 @@ def build_banner_svg(theme="dark"):
         dur="18s" repeatCount="indefinite"/>
     ''')
     
-    svg.append(f'<circle cx="{cx_box}" cy="{cy_box}" r="115" fill="url(#pyGlow)"/>')
-    svg.append(f'<circle cx="{cx_box}" cy="{cy_box}" r="92" stroke="#38BDF844" stroke-width="1.5" stroke-dasharray="6 8" fill="none"/>')
-    svg.append(f'<circle cx="{cx_box}" cy="{cy_box}" r="120" stroke="#FACC1533" stroke-width="1" stroke-dasharray="2 12" fill="none"/>')
+    svg.append(f'<circle cx="{cx_center}" cy="{cy_center}" r="115" fill="url(#pyGlow)"/>')
+    svg.append(f'<circle cx="{cx_center}" cy="{cy_center}" r="92" stroke="#38BDF844" stroke-width="1.5" stroke-dasharray="6 8" fill="none"/>')
+    svg.append(f'<circle cx="{cx_center}" cy="{cy_center}" r="120" stroke="#FACC1533" stroke-width="1" stroke-dasharray="2 12" fill="none"/>')
     
     py_scale = 7.2
-    py_ox = cx_box - 12.0 * py_scale
-    py_oy = cy_box - 12.0 * py_scale - 12.0
+    py_ox = cx_center - 12.0 * py_scale
+    py_oy = cy_center - 12.0 * py_scale - 12.0
     
     svg.append(f'<g transform="translate({py_ox:.1f}, {py_oy:.1f}) scale({py_scale})">')
-    svg.append(f'<path d="{py_path_d}" fill="url(#pyGrad)" filter="drop-shadow(0 0 4px #38BDF866)"/>')
+    svg.append(f'<path d="{py_path_d}" fill="url(#pyGrad)" filter="drop-shadow(0 0 5px #38BDF877)"/>')
     svg.append('</g>')
     
-    svg.append(f'<text x="{cx_box}" y="{cy_box + 96}" text-anchor="middle" fill="#FACC15" font-size="14" font-weight="700" letter-spacing="1.5">PYTHON 3.12</text>')
-    svg.append(f'<text x="{cx_box}" y="{cy_box + 114}" text-anchor="middle" fill="{text_label}" font-size="10.5">FASTAPI · AI &amp; ML · NUMPY · BACKEND</text>')
+    svg.append(f'<text x="{cx_center}" y="{cy_center + 96}" text-anchor="middle" fill="#FACC15" font-size="14" font-weight="700" letter-spacing="1.5">PYTHON 3.12</text>')
+    svg.append(f'<text x="{cx_center}" y="{cy_center + 114}" text-anchor="middle" fill="{text_label}" font-size="10.5">FASTAPI · AI &amp; ML · NUMPY · BACKEND</text>')
     svg.append('</g>') # End layer-python
     
-    # =========================================================================
-    # LAYER 3: REACT LOGO (Spinning Atomic Orbitals & Nucleus)
-    # Active: 9.0s - 13.5s
-    # =========================================================================
+    # LAYER 3: REACT LOGO
     svg.append('<g id="layer-react">')
     svg.append('''
       <animate attributeName="opacity"
@@ -420,31 +395,28 @@ def build_banner_svg(theme="dark"):
         dur="18s" repeatCount="indefinite"/>
     ''')
     
-    svg.append(f'<circle cx="{cx_box}" cy="{cy_box}" r="115" fill="url(#haloGlow)"/>')
-    svg.append(f'<circle cx="{cx_box}" cy="{cy_box}" r="102" stroke="#22D3EE44" stroke-width="1" stroke-dasharray="4 6" fill="none"/>')
+    svg.append(f'<circle cx="{cx_center}" cy="{cy_center}" r="115" fill="url(#haloGlow)"/>')
+    svg.append(f'<circle cx="{cx_center}" cy="{cy_center}" r="102" stroke="#22D3EE44" stroke-width="1" stroke-dasharray="4 6" fill="none"/>')
     
     re_scale = 7.0
-    re_ox = cx_box - 12.0 * re_scale
-    re_oy = cy_box - 12.0 * re_scale - 12.0
+    re_ox = cx_center - 12.0 * re_scale
+    re_oy = cy_center - 12.0 * re_scale - 12.0
     
     svg.append(f'<g transform="translate({re_ox:.1f}, {re_oy:.1f}) scale({re_scale})">')
     svg.append(f'''
       <g transform-origin="12 12">
         <animateTransform attributeName="transform" type="rotate"
           from="0 12 12" to="360 12 12" dur="12s" repeatCount="indefinite"/>
-        <path d="{re_path_d}" fill="url(#reactGrad)" filter="drop-shadow(0 0 5px #22D3EE88)"/>
+        <path d="{re_path_d}" fill="url(#reactGrad)" filter="drop-shadow(0 0 6px #22D3EE88)"/>
       </g>
     ''')
     svg.append('</g>')
     
-    svg.append(f'<text x="{cx_box}" y="{cy_box + 96}" text-anchor="middle" fill="#22D3EE" font-size="14" font-weight="700" letter-spacing="1.5">REACT 18</text>')
-    svg.append(f'<text x="{cx_box}" y="{cy_box + 114}" text-anchor="middle" fill="{text_label}" font-size="10.5">NEXT.JS · HOOKS · VIRTUAL DOM · SPA</text>')
+    svg.append(f'<text x="{cx_center}" y="{cy_center + 96}" text-anchor="middle" fill="#22D3EE" font-size="14" font-weight="700" letter-spacing="1.5">REACT 18</text>')
+    svg.append(f'<text x="{cx_center}" y="{cy_center + 114}" text-anchor="middle" fill="{text_label}" font-size="10.5">NEXT.JS · HOOKS · VIRTUAL DOM · SPA</text>')
     svg.append('</g>') # End layer-react
     
-    # =========================================================================
-    # LAYER 4: JAVASCRIPT LOGO (Official JS Badge Emblem)
-    # Active: 13.5s - 17.5s
-    # =========================================================================
+    # LAYER 4: JAVASCRIPT LOGO
     svg.append('<g id="layer-js">')
     svg.append('''
       <animate attributeName="opacity"
@@ -453,24 +425,22 @@ def build_banner_svg(theme="dark"):
         dur="18s" repeatCount="indefinite"/>
     ''')
     
-    svg.append(f'<circle cx="{cx_box}" cy="{cy_box}" r="115" fill="url(#jsGlow)"/>')
-    svg.append(f'<rect x="{cx_box - 88}" y="{cy_box - 100}" width="176" height="176" rx="14" stroke="#FBBF2455" stroke-width="1.5" stroke-dasharray="8 6" fill="none"/>')
+    svg.append(f'<circle cx="{cx_center}" cy="{cy_center}" r="115" fill="url(#jsGlow)"/>')
+    svg.append(f'<rect x="{cx_center - 88}" y="{cy_center - 100}" width="176" height="176" rx="14" stroke="#FBBF2455" stroke-width="1.5" stroke-dasharray="8 6" fill="none"/>')
     
     js_scale = 6.4
-    js_ox = cx_box - 12.0 * js_scale
-    js_oy = cy_box - 12.0 * js_scale - 12.0
+    js_ox = cx_center - 12.0 * js_scale
+    js_oy = cy_center - 12.0 * js_scale - 12.0
     
-    svg.append(f'<g transform="translate({js_ox:.1f}, {py_oy:.1f}) scale({js_scale})">')
+    svg.append(f'<g transform="translate({js_ox:.1f}, {js_oy:.1f}) scale({js_scale})">')
     svg.append(f'<path d="{js_path_d}" fill="url(#jsGrad)" fill-rule="evenodd" filter="drop-shadow(0 0 6px #F59E0B77)"/>')
     svg.append('</g>')
     
-    svg.append(f'<text x="{cx_box}" y="{cy_box + 96}" text-anchor="middle" fill="#FBBF24" font-size="14" font-weight="700" letter-spacing="1.5">JAVASCRIPT ES6+</text>')
-    svg.append(f'<text x="{cx_box}" y="{cy_box + 114}" text-anchor="middle" fill="{text_label}" font-size="10.5">NODE.JS · ASYNC/AWAIT · REST · V8</text>')
+    svg.append(f'<text x="{cx_center}" y="{cy_center + 96}" text-anchor="middle" fill="#FBBF24" font-size="14" font-weight="700" letter-spacing="1.5">JAVASCRIPT ES6+</text>')
+    svg.append(f'<text x="{cx_center}" y="{cy_center + 114}" text-anchor="middle" fill="{text_label}" font-size="10.5">NODE.JS · ASYNC/AWAIT · REST · V8</text>')
     svg.append('</g>') # End layer-js
     
-    # =========================================================================
     # LAYER 5: AMBIENT FLOATING CYBERNETIC PARTICLES
-    # =========================================================================
     svg.append('<g id="ambient-particles" fill="#22D3EE">')
     svg.append('''
       <animate attributeName="opacity"
@@ -491,90 +461,103 @@ def build_banner_svg(theme="dark"):
     
     svg.append('</g>') # End clip-path group
     
-    # Dynamic Footer for Left Panel at y=600
+    # =========================================================================
+    # LEFT HUD TELEMETRY WING (x=45..350)
+    # =========================================================================
     svg.append(f'''
-    <g font-size="11" fill="{text_muted}">
-      <text x="44" y="600">
-        LOC: INDIA · ENCODING: UTF-8 · LATENCY: 18ms
-        <animate attributeName="opacity"
-          values="1; 1; 0; 0; 0; 0; 0; 0; 1; 1"
-          keyTimes="0; 0.233; 0.261; 0.480; 0.720; 0.940; 0.961; 0.989; 1; 1"
-          dur="18s" repeatCount="indefinite"/>
-      </text>
-      <text x="44" y="600" fill="#38BDF8">
-        STACK: FASTAPI · PYTORCH · FLASK · NUMPY
-        <animate attributeName="opacity"
-          values="0; 0; 1; 1; 0; 0; 0; 0"
-          keyTimes="0; 0.250; 0.278; 0.472; 0.500; 0.750; 0.950; 1"
-          dur="18s" repeatCount="indefinite"/>
-      </text>
-      <text x="44" y="600" fill="#22D3EE">
-        STACK: NEXT.JS · TAILWIND · REDUX · HOOKS
-        <animate attributeName="opacity"
-          values="0; 0; 1; 1; 0; 0; 0; 0"
-          keyTimes="0; 0.489; 0.517; 0.711; 0.739; 0.850; 0.950; 1"
-          dur="18s" repeatCount="indefinite"/>
-      </text>
-      <text x="44" y="600" fill="#FBBF24">
-        STACK: TYPESCRIPT · EXPRESS · REST · V8
-        <animate attributeName="opacity"
-          values="0; 0; 1; 1; 0; 0; 0; 0"
-          keyTimes="0; 0.728; 0.756; 0.944; 0.972; 0.980; 0.990; 1"
-          dur="18s" repeatCount="indefinite"/>
-      </text>
+    <g transform="translate(48, 120)">
+      <!-- Panel Header -->
+      <text x="0" y="0" class="sec-hdr">01 // CORE ARCHITECTURE</text>
+      <line x1="0" y1="10" x2="280" y2="10" stroke="{border_col}" stroke-width="1"/>
+      
+      <!-- Module 1: AI & ML -->
+      <g transform="translate(0, 36)">
+        <rect x="0" y="0" width="280" height="54" rx="8" fill="{chrome_col}0A" stroke="{border_col}" stroke-width="1"/>
+        <text x="14" y="22" class="hud-title">AI &amp; MACHINE LEARNING</text>
+        <text x="14" y="40" class="hud-sub">PyTorch · Transformers · World Models · NTRO</text>
+      </g>
+      
+      <!-- Module 2: Full-Stack Engineering -->
+      <g transform="translate(0, 106)">
+        <rect x="0" y="0" width="280" height="54" rx="8" fill="{chrome_col}0A" stroke="{border_col}" stroke-width="1"/>
+        <text x="14" y="22" class="hud-title">FULL-STACK SYSTEMS</text>
+        <text x="14" y="40" class="hud-sub">React 18 · Next.js · Node.js · FastAPI · REST</text>
+      </g>
+      
+      <!-- Module 3: Distributed & Cloud -->
+      <g transform="translate(0, 176)">
+        <rect x="0" y="0" width="280" height="54" rx="8" fill="{chrome_col}0A" stroke="{border_col}" stroke-width="1"/>
+        <text x="14" y="22" class="hud-title">INFRASTRUCTURE &amp; CLOUD</text>
+        <text x="14" y="40" class="hud-sub">AWS · GCP · Docker · Linux x86_64 · Vercel</text>
+      </g>
+      
+      <!-- Live Pulse Wave Gauge -->
+      <g transform="translate(0, 252)">
+        <text x="0" y="0" font-size="10.5" fill="{text_muted}">TELEMETRY SPECTRUM</text>
+        <g stroke="{chrome_col}" stroke-width="1.8" fill="none">
+          <path d="M 0 16 L 35 16 L 45 4 L 55 28 L 65 10 L 75 22 L 85 16 L 160 16 L 170 2 L 180 30 L 190 16 L 280 16">
+            <animate attributeName="stroke-dashoffset" values="0; 280" dur="4s" repeatCount="indefinite"/>
+          </path>
+        </g>
+      </g>
     </g>
     ''')
     
     # =========================================================================
-    # RIGHT PANEL: SYSTEM.INFO (Verified Information, Clean Typography)
+    # RIGHT HUD TELEMETRY WING (x=850..1130)
     # =========================================================================
-    svg.append(f'<text x="442" y="126" class="sec-hdr">SYSTEM.INFO</text>')
-    svg.append(f'<text x="560" y="126" fill="{text_muted}" font-size="11">· ACTIVE SESSION ID #266045105</text>')
+    svg.append(f'''
+    <g transform="translate(850, 120)">
+      <!-- Panel Header -->
+      <text x="0" y="0" class="sec-hdr">02 // SYSTEMS TELEMETRY</text>
+      <line x1="0" y1="10" x2="280" y2="10" stroke="{border_col}" stroke-width="1"/>
+      
+      <!-- Metric 1: System Status -->
+      <g transform="translate(0, 36)">
+        <rect x="0" y="0" width="280" height="54" rx="8" fill="{accent_col}0A" stroke="{border_col}" stroke-width="1"/>
+        <circle cx="20" cy="27" r="4.5" fill="{accent_col}">
+          <animate attributeName="opacity" values="1; 0.2; 1" dur="1.8s" repeatCount="indefinite"/>
+        </circle>
+        <text x="36" y="23" font-size="12" font-weight="700" fill="{accent_col}">SYSTEM ACTIVE · SHIPPING</text>
+        <text x="36" y="40" class="hud-sub">Continuous delivery pipeline online</text>
+      </g>
+      
+      <!-- Metric 2: Origin & Base -->
+      <g transform="translate(0, 106)">
+        <rect x="0" y="0" width="280" height="54" rx="8" fill="{chrome_col}0A" stroke="{border_col}" stroke-width="1"/>
+        <text x="14" y="22" class="hud-title">BASE &amp; TIMEZONE</text>
+        <text x="14" y="40" class="hud-val">India · Asia/Kolkata (UTC +05:30)</text>
+      </g>
+      
+      <!-- Metric 3: Uptime & Latency -->
+      <g transform="translate(0, 176)">
+        <rect x="0" y="0" width="280" height="54" rx="8" fill="{chrome_col}0A" stroke="{border_col}" stroke-width="1"/>
+        <text x="14" y="22" class="hud-title">PIPELINE METRICS</text>
+        <text x="14" y="40" class="hud-val">99.98% Uptime · 18ms Latency · 0 Leaks</text>
+      </g>
+      
+      <!-- Network Signals / Bars -->
+      <g transform="translate(0, 252)">
+        <text x="0" y="0" font-size="10.5" fill="{text_muted}">NETWORK SIGNAL</text>
+        <g fill="{chrome_col}">
+          <rect x="0" y="10" width="8" height="12" rx="2"/>
+          <rect x="14" y="6" width="8" height="16" rx="2"/>
+          <rect x="28" y="2" width="8" height="20" rx="2"/>
+          <rect x="42" y="-2" width="8" height="24" rx="2"/>
+        </g>
+        <text x="62" y="16" font-size="11" font-weight="700" fill="{chrome_col}">OPTIMAL (5/5)</text>
+      </g>
+    </g>
+    ''')
     
-    rows = [
-        ("Subject", "Mohammad Hasim", 140, "url(#nameGrad)"),
-        ("Role", "Full-Stack Developer", 185, chrome_col), # NO IoT!
-        ("Origin", "India", 50, text_val),
-        ("Education", "B.Tech CSE", 95, text_val), # NO IoT!
-        ("Status", "Building + Learning + Shipping", 260, accent_col),
-        ("ToolChain", "VS Code · Git · Postman · Vercel", 280, text_val),
-        ("---", "", 0, ""),
-        ("Core.Lang", "Python · JavaScript · Java · C", 270, text_val),
-        ("Core.Frontend", "React · Next.js · HTML5 · CSS3", 265, text_val),
-        ("Core.Backend", "Node.js · Express · FastAPI · Flask", 300, text_val),
-        ("Core.Database", "MongoDB · MySQL · Firebase", 230, text_val),
-        ("Core.Infra", "AWS · GCP · Vercel · Netlify", 235, text_val),
-        ("---", "", 0, ""),
-        ("Grid.Mail", "hasimsaudagar3@gmail.com", 225, text_val),
-        ("Grid.LinkedIn", "in/mohammad-hasim-9992423a0", 240, chrome_col),
-        ("Grid.GitHub", "github.com/hasim2006", 175, chrome_col),
-        ("Grid.Portfolio", "portfolio-website.vercel.app", 235, accent_col)
-    ]
-    
-    start_y = 154
-    spacing = 25
-    curr_y = start_y
-    val_right_x = 1144
-    
-    for label, val, val_len, val_col in rows:
-        if label == "---":
-            svg.append(f'<line x1="442" y1="{curr_y - 8}" x2="1144" y2="{curr_y - 8}" stroke="{border_col}" stroke-width="1"/>')
-            curr_y += 12
-            continue
-            
-        svg.append(f'<text x="442" y="{curr_y}" class="row-lbl">{label}</text>')
-        lbl_w = len(label) * 8.8
-        dot_start_x = int(442 + lbl_w + 12)
-        dot_end_x = int(val_right_x - val_len - 14)
-        
-        if dot_end_x > dot_start_x:
-            svg.append(f'<line x1="{dot_start_x}" y1="{curr_y - 4}" x2="{dot_end_x}" y2="{curr_y - 4}" class="leader"/>')
-            
-        svg.append(f'''<text x="{val_right_x}" y="{curr_y}" text-anchor="end" textLength="{val_len}" lengthAdjust="spacingAndGlyphs" fill="{val_col}" font-size="14" font-weight="600">{val}</text>''')
-        curr_y += spacing
-        
-    svg.append(f'<line x1="442" y1="575" x2="1144" y2="575" stroke="{border_col}" stroke-width="1"/>')
-    svg.append(f'<text x="442" y="595" fill="{text_muted}" font-size="11">SYS: LINUX_x86_64 · STATUS: 200 OK · UPTIME: 99.98% · REPO: hasim2006/hasim2006</text>')
+    # Bottom HUD Status Footer Bar
+    svg.append(f'<line x1="20" y1="495" x2="1160" y2="495" stroke="{border_col}" stroke-width="1"/>')
+    svg.append(f'''
+    <g font-size="11" fill="{text_muted}">
+      <text x="36" y="515">SYS: LINUX_x86_64 · STATUS: 200 OK · PROTOCOL: HTTPS // ENCRYPTED · REPO: hasim2006/hasim2006</text>
+      <text x="1144" y="515" text-anchor="end" fill="{chrome_col}">HUD.ENGINE // v3.4 · MOHAMMAD HASIM</text>
+    </g>
+    ''')
     
     svg.append('</svg>')
     return "\n".join(svg)

@@ -1,9 +1,18 @@
 <div align="center">
-  <!-- PHASE 1: Terminal Visual Banner -->
+  <!-- PHASE 0: Hero Greeting Header (Outside the box with animated transition) -->
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/hasim2006/hasim2006/main/dark.svg?v=2">
-    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/hasim2006/hasim2006/main/light.svg?v=2">
-    <img alt="Mohammad Hasim" src="https://raw.githubusercontent.com/hasim2006/hasim2006/main/dark.svg?v=2" width="100%">
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/hasim2006/hasim2006/main/header_dark.svg?v=1">
+    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/hasim2006/hasim2006/main/header_light.svg?v=1">
+    <img alt="Hi there 👋 I'm Mohammad Hasim" src="https://raw.githubusercontent.com/hasim2006/hasim2006/main/header_dark.svg?v=1" width="100%">
+  </picture>
+
+  <br/>
+
+  <!-- PHASE 1: Cyber HUD Terminal Box (Vertices & corners, merged background) -->
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/hasim2006/hasim2006/main/dark.svg?v=3">
+    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/hasim2006/hasim2006/main/light.svg?v=3">
+    <img alt="Mohammad Hasim" src="https://raw.githubusercontent.com/hasim2006/hasim2006/main/dark.svg?v=3" width="100%">
   </picture>
 
   <br/><br/>
