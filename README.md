@@ -40,11 +40,11 @@
 
   <br/><br/>
 
-  <!-- PHASE 5: Obsidian Knowledge & Dev Flow -->
+  <!-- PHASE 5: Contribution Reservoir (Water Glass with Dropping Commits) -->
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/hasim2006/hasim2006/main/obsidian_flow_dark.svg" />
-    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/hasim2006/hasim2006/main/obsidian_flow_light.svg" />
-    <img alt="Obsidian Dev Flow" src="https://raw.githubusercontent.com/hasim2006/hasim2006/main/obsidian_flow_dark.svg" width="100%" />
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/hasim2006/hasim2006/main/contribution_glass_dark.svg" />
+    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/hasim2006/hasim2006/main/contribution_glass_light.svg" />
+    <img alt="Contribution Water Reservoir" src="https://raw.githubusercontent.com/hasim2006/hasim2006/main/contribution_glass_dark.svg" width="100%" />
   </picture>
 
 </div>
