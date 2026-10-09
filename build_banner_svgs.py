@@ -9,7 +9,7 @@ img_path = r"c:\Users\hasim\OneDrive\Desktop\github'\WhatsApp Image 2026-10-09 a
 output_dir = r"c:\Users\hasim\OneDrive\Desktop\github'\hasim2006"
 os.makedirs(output_dir, exist_ok=True)
 
-# 1. Prepare Full Image Dithering (No polygon mask - complete photographic presence)
+# 1. Prepare Full Image Dithering
 img_rgb = Image.open(img_path).convert("RGB")
 crop_box = (60, 10, 692, 726)
 cropped = img_rgb.crop(crop_box).resize((300, 340), Image.Resampling.LANCZOS)
@@ -108,18 +108,17 @@ re_path_d = tree_re.getroot().find('{http://www.w3.org/2000/svg}path').attrib['d
 tree_js = ET.parse(os.path.join(scratch_dir, "javascript.svg"))
 js_path_d = tree_js.getroot().find('{http://www.w3.org/2000/svg}path').attrib['d']
 
-# 3. Ambient Floating Particles for Tech Atmosphere (around logos, off during photo)
+# 3. Ambient Floating Particles for Tech Atmosphere
 NUM_PARTICLES = 160
 np.random.seed(42)
 particles = []
-cx_box, cy_box = 223.0, 331.0
+cx_box, cy_box = 223.0, 360.0
 for i in range(NUM_PARTICLES):
     angle = np.random.uniform(0, 2 * math.pi)
     dist = np.random.uniform(35, 145)
     px = cx_box + dist * math.cos(angle)
     py = cy_box + dist * math.sin(angle)
     r = np.random.uniform(1.0, 2.2)
-    # Orbit displacement
     dx = np.random.uniform(-20, 20)
     dy = np.random.uniform(-20, 20)
     particles.append((px, py, r, dx, dy))
@@ -128,7 +127,6 @@ for i in range(NUM_PARTICLES):
 def build_banner_svg(theme="dark"):
     is_dark = (theme == "dark")
     bg_col = "#0A101F" if is_dark else "#F8FAFC"
-    panel_bg = "#070c17" if is_dark else "#FFFFFF"
     chrome_col = "#22D3EE" if is_dark else "#0891B2"
     border_col = "#1E293B" if is_dark else "#CBD5E1"
     portrait_col = "#A78BFA" if is_dark else "#7C3AED"
@@ -140,21 +138,38 @@ def build_banner_svg(theme="dark"):
     
     runs = runs_dark if is_dark else runs_light
     
-    # Scale and center photo in the 378x486 box
-    # Box is x=34..412, y=88..574
-    # Photo is 300x340
+    # Scale and center photo in the left area (seamlessly merged, NO inner box)
     scale = 1.14
     photo_w = 300 * scale # 342
     photo_h = 340 * scale # 387.6
     ox = 34 + (378 - photo_w) / 2 # 52.0
-    oy = 88 + (486 - photo_h) / 2 + 10 # 147.2
+    oy = 136 + (450 - photo_h) / 2 # 167.2
     
     svg = []
-    svg.append('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 610" width="100%" height="100%">')
+    svg.append('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 625" width="100%" height="100%">')
     svg.append('<defs>')
     
     # Gradients & Filters
     svg.append('''
+      <!-- Dynamic Transition Gradient for Name: Cycles smoothly between Cyan, Violet, Emerald, Gold -->
+      <linearGradient id="nameGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#22D3EE">
+          <animate attributeName="stop-color"
+            values="#22D3EE; #A78BFA; #10B981; #FACC15; #22D3EE"
+            dur="6s" repeatCount="indefinite"/>
+        </stop>
+        <stop offset="50%" stop-color="#A78BFA">
+          <animate attributeName="stop-color"
+            values="#A78BFA; #10B981; #FACC15; #22D3EE; #A78BFA"
+            dur="6s" repeatCount="indefinite"/>
+        </stop>
+        <stop offset="100%" stop-color="#10B981">
+          <animate attributeName="stop-color"
+            values="#10B981; #FACC15; #22D3EE; #A78BFA; #10B981"
+            dur="6s" repeatCount="indefinite"/>
+        </stop>
+      </linearGradient>
+
       <linearGradient id="pyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
         <stop offset="0%" stop-color="#38BDF8"/>
         <stop offset="48%" stop-color="#38BDF8"/>
@@ -191,7 +206,7 @@ def build_banner_svg(theme="dark"):
     
     svg.append('<style>')
     svg.append(f'''
-      @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&amp;display=swap');
       text {{ font-family: 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, monospace; }}
       .traffic-red {{ fill: #EF4444; }}
       .traffic-yellow {{ fill: #F59E0B; }}
@@ -212,14 +227,14 @@ def build_banner_svg(theme="dark"):
     svg.append('</defs>')
     
     # 1. Main Background Card
-    svg.append(f'<rect width="1180" height="610" rx="14" fill="{bg_col}" stroke="{border_col}" stroke-width="1.5"/>')
+    svg.append(f'<rect width="1180" height="625" rx="14" fill="{bg_col}" stroke="{border_col}" stroke-width="1.5"/>')
     
-    # Header Bar
+    # Header Chrome Bar (y=0..44)
     svg.append(f'<line x1="0" y1="44" x2="1180" y2="44" stroke="{border_col}" stroke-width="1"/>')
     svg.append('<circle cx="26" cy="22" r="5.5" class="traffic-red"/>')
     svg.append('<circle cx="44" cy="22" r="5.5" class="traffic-yellow"/>')
     svg.append('<circle cx="62" cy="22" r="5.5" class="traffic-green"/>')
-    svg.append('<text x="590" y="27" text-anchor="middle" class="title">profile.sh --live</text>')
+    svg.append('<text x="590" y="27" text-anchor="middle" class="title">terminal // hasim@dev:~$</text>')
     
     # LIVE indicator
     svg.append('<g>')
@@ -235,15 +250,57 @@ def build_banner_svg(theme="dark"):
     svg.append('<text x="1115" y="26" text-anchor="middle" class="pill-text">@hasim2006</text>')
     svg.append('</g>')
     
-    # 2. Left Panel: VISUAL.MAP Frame
-    svg.append(f'<text x="36" y="74" class="sec-hdr">VISUAL.MAP</text>')
+    # =========================================================================
+    # HERO GREETING SECTION (Requested: "Hi there 👋 I'm Mohammad Hasim" with visible transition)
+    # =========================================================================
+    svg.append(f'<line x1="0" y1="102" x2="1180" y2="102" stroke="{border_col}" stroke-width="1"/>')
+    
+    # Terminal Prompt & Greeting
+    svg.append(f'''
+    <!-- Terminal Prompt & Greeting -->
+    <g>
+      <!-- Green CLI prompt symbol -->
+      <text x="36" y="78" font-size="22" font-weight="700" fill="#10B981">&gt;</text>
+      <!-- Static greeting text -->
+      <text x="56" y="78" font-size="21" font-weight="700" fill="{text_val}">Hi there </text>
+      
+      <!-- Animated Waving Hand Emoji -->
+      <g transform="translate(162, 57)">
+        <text x="0" y="21" font-size="22">👋</text>
+        <animateTransform attributeName="transform" type="rotate"
+          values="0 8 18; 26 8 18; -12 8 18; 26 8 18; 0 8 18"
+          dur="1.8s" repeatCount="indefinite"/>
+      </g>
+      
+      <text x="198" y="78" font-size="21" font-weight="500" fill="{text_muted}"> I&apos;m </text>
+      
+      <!-- Mohammad Hasim with Dynamic Glowing Gradient Transition -->
+      <text x="254" y="78" font-size="22" font-weight="800" fill="url(#nameGrad)" letter-spacing="0.5">
+        Mohammad Hasim
+        <animate attributeName="opacity" values="0.85; 1; 0.85" dur="2.5s" repeatCount="indefinite"/>
+      </text>
+    </g>
+    
+    <!-- Top Right Role & Status Badge -->
+    <g>
+      <rect x="888" y="60" width="256" height="28" rx="6" fill="{chrome_col}15" stroke="{chrome_col}55" stroke-width="1"/>
+      <circle cx="904" cy="74" r="4" fill="#10B981">
+        <animate attributeName="opacity" values="1; 0.3; 1" dur="2s" repeatCount="indefinite"/>
+      </circle>
+      <text x="918" y="78" fill="{chrome_col}" font-size="11.5" font-weight="700" letter-spacing="1">FULL-STACK &amp; AI DEVELOPER</text>
+    </g>
+    ''')
+    
+    # =========================================================================
+    # LEFT PANEL: VISUAL.MAP (Photo & Sequential Tech Logos - MERGED WITH BG, NO BOX)
+    # =========================================================================
+    svg.append(f'<text x="36" y="126" class="sec-hdr">VISUAL.MAP</text>')
     
     # Dynamic Phase Subtitle at Header (Changes with active sequence)
-    # 0s-4.5s: Photo, 4.5s-9s: Python, 9s-13.5s: React, 13.5s-17.5s: JS, 17.5s-18s: Photo
     svg.append(f'''
     <g font-size="11" fill="{text_muted}">
       <!-- Subtitle 0: Photo -->
-      <text x="145" y="74">
+      <text x="145" y="126">
         · PORTRAIT.ID // MOHAMMAD HASIM
         <animate attributeName="opacity"
           values="1; 1; 0; 0; 0; 0; 0; 0; 1; 1"
@@ -251,7 +308,7 @@ def build_banner_svg(theme="dark"):
           dur="18s" repeatCount="indefinite"/>
       </text>
       <!-- Subtitle 1: Python -->
-      <text x="145" y="74" fill="#38BDF8">
+      <text x="145" y="126" fill="#38BDF8">
         · CORE.STACK [01/03] // PYTHON
         <animate attributeName="opacity"
           values="0; 0; 1; 1; 0; 0; 0; 0"
@@ -259,7 +316,7 @@ def build_banner_svg(theme="dark"):
           dur="18s" repeatCount="indefinite"/>
       </text>
       <!-- Subtitle 2: React -->
-      <text x="145" y="74" fill="#22D3EE">
+      <text x="145" y="126" fill="#22D3EE">
         · CORE.STACK [02/03] // REACT
         <animate attributeName="opacity"
           values="0; 0; 1; 1; 0; 0; 0; 0"
@@ -267,7 +324,7 @@ def build_banner_svg(theme="dark"):
           dur="18s" repeatCount="indefinite"/>
       </text>
       <!-- Subtitle 3: JavaScript -->
-      <text x="145" y="74" fill="#FBBF24">
+      <text x="145" y="126" fill="#FBBF24">
         · CORE.STACK [03/03] // JAVASCRIPT
         <animate attributeName="opacity"
           values="0; 0; 1; 1; 0; 0; 0; 0"
@@ -277,26 +334,12 @@ def build_banner_svg(theme="dark"):
     </g>
     ''')
     
-    # Left Panel Container Box (378 x 486)
-    svg.append(f'<rect x="34" y="88" width="378" height="486" rx="10" fill="{panel_bg}" stroke="{border_col}" stroke-width="1"/>')
-    # Corner brackets
-    svg.append(f'<path d="M 44 98 h 10 M 44 98 v 10 M 402 98 h -10 M 402 98 v 10 M 44 564 h 10 M 44 564 v -10 M 402 564 h -10 M 402 564 v -10" stroke="{chrome_col}55" stroke-width="1.5" fill="none"/>')
+    # Vertical Dotted Divider separating Left & Right panels (Natural & open layout)
+    svg.append(f'<line x1="424" y1="106" x2="424" y2="598" stroke="{border_col}" stroke-dasharray="3 4" stroke-width="1.2"/>')
     
-    # Inner clip-path to ensure portrait stays cleanly within borders
-    svg.append('<clipPath id="panelClip"><rect x="36" y="90" width="374" height="482" rx="8"/></clipPath>')
-    
+    # Clip-path to keep scanner & visuals within bounds without any box stroke/fill
+    svg.append('<clipPath id="panelClip"><rect x="30" y="132" width="388" height="465" rx="8"/></clipPath>')
     svg.append('<g clip-path="url(#panelClip)">')
-    
-    # Subtle cybernetic background grid inside box
-    svg.append(f'''
-    <g stroke="{border_col}" stroke-width="0.5" stroke-dasharray="2 6" opacity="0.6">
-      <line x1="36" y1="210" x2="410" y2="210"/>
-      <line x1="36" y1="331" x2="410" y2="331"/>
-      <line x1="36" y1="452" x2="410" y2="452"/>
-      <line x1="160" y1="90" x2="160" y2="572"/>
-      <line x1="284" y1="90" x2="284" y2="572"/>
-    </g>
-    ''')
     
     # =========================================================================
     # LAYER 1: FULL USER PHOTO (Dithered with pure photographic completeness)
@@ -310,7 +353,6 @@ def build_banner_svg(theme="dark"):
         dur="18s" repeatCount="indefinite"/>
     ''')
     
-    # Path d for all runs
     path_runs = []
     for y, sx, length in runs:
         px = ox + sx * scale
@@ -324,8 +366,8 @@ def build_banner_svg(theme="dark"):
     
     # Cybernetic Scanner Line across the photo
     svg.append(f'''
-      <rect x="44" y="100" width="358" height="28" fill="url(#scanGrad)" opacity="0.75">
-        <animate attributeName="y" values="90; 530; 90" dur="4.2s" repeatCount="indefinite"/>
+      <rect x="44" y="140" width="358" height="28" fill="url(#scanGrad)" opacity="0.75">
+        <animate attributeName="y" values="140; 540; 140" dur="4.2s" repeatCount="indefinite"/>
       </rect>
     ''')
     svg.append('</g>') # End layer-photo
@@ -342,12 +384,10 @@ def build_banner_svg(theme="dark"):
         dur="18s" repeatCount="indefinite"/>
     ''')
     
-    # Python Background Halo & Reticle
     svg.append(f'<circle cx="{cx_box}" cy="{cy_box}" r="115" fill="url(#pyGlow)"/>')
     svg.append(f'<circle cx="{cx_box}" cy="{cy_box}" r="92" stroke="#38BDF844" stroke-width="1.5" stroke-dasharray="6 8" fill="none"/>')
     svg.append(f'<circle cx="{cx_box}" cy="{cy_box}" r="120" stroke="#FACC1533" stroke-width="1" stroke-dasharray="2 12" fill="none"/>')
     
-    # Scaled Python Path (scale 7.2 centered at cx_box, cy_box)
     py_scale = 7.2
     py_ox = cx_box - 12.0 * py_scale
     py_oy = cy_box - 12.0 * py_scale - 12.0
@@ -356,7 +396,6 @@ def build_banner_svg(theme="dark"):
     svg.append(f'<path d="{py_path_d}" fill="url(#pyGrad)" filter="drop-shadow(0 0 4px #38BDF866)"/>')
     svg.append('</g>')
     
-    # Tech Label & Badges for Python
     svg.append(f'<text x="{cx_box}" y="{cy_box + 96}" text-anchor="middle" fill="#FACC15" font-size="14" font-weight="700" letter-spacing="1.5">PYTHON 3.12</text>')
     svg.append(f'<text x="{cx_box}" y="{cy_box + 114}" text-anchor="middle" fill="{text_label}" font-size="10.5">FASTAPI · AI &amp; ML · NUMPY · BACKEND</text>')
     svg.append('</g>') # End layer-python
@@ -373,17 +412,14 @@ def build_banner_svg(theme="dark"):
         dur="18s" repeatCount="indefinite"/>
     ''')
     
-    # React Halo
     svg.append(f'<circle cx="{cx_box}" cy="{cy_box}" r="115" fill="url(#haloGlow)"/>')
     svg.append(f'<circle cx="{cx_box}" cy="{cy_box}" r="102" stroke="#22D3EE44" stroke-width="1" stroke-dasharray="4 6" fill="none"/>')
     
-    # Rotating React Atom
     re_scale = 7.0
     re_ox = cx_box - 12.0 * re_scale
     re_oy = cy_box - 12.0 * re_scale - 12.0
     
     svg.append(f'<g transform="translate({re_ox:.1f}, {re_oy:.1f}) scale({re_scale})">')
-    # Rotating outer orbital group
     svg.append(f'''
       <g transform-origin="12 12">
         <animateTransform attributeName="transform" type="rotate"
@@ -393,7 +429,6 @@ def build_banner_svg(theme="dark"):
     ''')
     svg.append('</g>')
     
-    # Tech Label & Badges for React
     svg.append(f'<text x="{cx_box}" y="{cy_box + 96}" text-anchor="middle" fill="#22D3EE" font-size="14" font-weight="700" letter-spacing="1.5">REACT 18</text>')
     svg.append(f'<text x="{cx_box}" y="{cy_box + 114}" text-anchor="middle" fill="{text_label}" font-size="10.5">NEXT.JS · HOOKS · VIRTUAL DOM · SPA</text>')
     svg.append('</g>') # End layer-react
@@ -410,31 +445,25 @@ def build_banner_svg(theme="dark"):
         dur="18s" repeatCount="indefinite"/>
     ''')
     
-    # JS Halo & Reticle
     svg.append(f'<circle cx="{cx_box}" cy="{cy_box}" r="115" fill="url(#jsGlow)"/>')
     svg.append(f'<rect x="{cx_box - 88}" y="{cy_box - 100}" width="176" height="176" rx="14" stroke="#FBBF2455" stroke-width="1.5" stroke-dasharray="8 6" fill="none"/>')
     
-    # Scaled JS Emblem
     js_scale = 6.4
     js_ox = cx_box - 12.0 * js_scale
     js_oy = cy_box - 12.0 * js_scale - 12.0
     
-    svg.append(f'<g transform="translate({js_ox:.1f}, {js_oy:.1f}) scale({js_scale})">')
+    svg.append(f'<g transform="translate({js_ox:.1f}, {py_oy:.1f}) scale({js_scale})">')
     svg.append(f'<path d="{js_path_d}" fill="url(#jsGrad)" fill-rule="evenodd" filter="drop-shadow(0 0 6px #F59E0B77)"/>')
     svg.append('</g>')
-
     
-    # Tech Label & Badges for JavaScript
     svg.append(f'<text x="{cx_box}" y="{cy_box + 96}" text-anchor="middle" fill="#FBBF24" font-size="14" font-weight="700" letter-spacing="1.5">JAVASCRIPT ES6+</text>')
     svg.append(f'<text x="{cx_box}" y="{cy_box + 114}" text-anchor="middle" fill="{text_label}" font-size="10.5">NODE.JS · ASYNC/AWAIT · REST · V8</text>')
     svg.append('</g>') # End layer-js
     
     # =========================================================================
     # LAYER 5: AMBIENT FLOATING CYBERNETIC PARTICLES
-    # Active only during logo phases (completely hidden during photo phase!)
     # =========================================================================
     svg.append('<g id="ambient-particles" fill="#22D3EE">')
-    # Disappear during photo, burst into life during logos
     svg.append('''
       <animate attributeName="opacity"
         values="0; 0; 0.85; 0.85; 0.85; 0.85; 0; 0"
@@ -454,31 +483,31 @@ def build_banner_svg(theme="dark"):
     
     svg.append('</g>') # End clip-path group
     
-    # Dynamic Footer for Left Panel at y=594
+    # Dynamic Footer for Left Panel at y=600
     svg.append(f'''
     <g font-size="11" fill="{text_muted}">
-      <text x="44" y="594">
+      <text x="44" y="600">
         LOC: INDIA · ENCODING: UTF-8 · LATENCY: 18ms
         <animate attributeName="opacity"
           values="1; 1; 0; 0; 0; 0; 0; 0; 1; 1"
           keyTimes="0; 0.233; 0.261; 0.480; 0.720; 0.940; 0.961; 0.989; 1; 1"
           dur="18s" repeatCount="indefinite"/>
       </text>
-      <text x="44" y="594" fill="#38BDF8">
+      <text x="44" y="600" fill="#38BDF8">
         STACK: FASTAPI · PYTORCH · FLASK · NUMPY
         <animate attributeName="opacity"
           values="0; 0; 1; 1; 0; 0; 0; 0"
           keyTimes="0; 0.250; 0.278; 0.472; 0.500; 0.750; 0.950; 1"
           dur="18s" repeatCount="indefinite"/>
       </text>
-      <text x="44" y="594" fill="#22D3EE">
+      <text x="44" y="600" fill="#22D3EE">
         STACK: NEXT.JS · TAILWIND · REDUX · HOOKS
         <animate attributeName="opacity"
           values="0; 0; 1; 1; 0; 0; 0; 0"
           keyTimes="0; 0.489; 0.517; 0.711; 0.739; 0.850; 0.950; 1"
           dur="18s" repeatCount="indefinite"/>
       </text>
-      <text x="44" y="594" fill="#FBBF24">
+      <text x="44" y="600" fill="#FBBF24">
         STACK: TYPESCRIPT · EXPRESS · REST · V8
         <animate attributeName="opacity"
           values="0; 0; 1; 1; 0; 0; 0; 0"
@@ -491,11 +520,11 @@ def build_banner_svg(theme="dark"):
     # =========================================================================
     # RIGHT PANEL: SYSTEM.INFO (Verified Information, Clean Typography)
     # =========================================================================
-    svg.append(f'<text x="442" y="74" class="sec-hdr">SYSTEM.INFO</text>')
-    svg.append(f'<text x="560" y="74" fill="{text_muted}" font-size="11">· ACTIVE SESSION ID #266045105</text>')
+    svg.append(f'<text x="442" y="126" class="sec-hdr">SYSTEM.INFO</text>')
+    svg.append(f'<text x="560" y="126" fill="{text_muted}" font-size="11">· ACTIVE SESSION ID #266045105</text>')
     
     rows = [
-        ("Subject", "Mohammad Hasim", 140, text_val),
+        ("Subject", "Mohammad Hasim", 140, "url(#nameGrad)"),
         ("Role", "Full-Stack Developer", 185, chrome_col), # NO IoT!
         ("Origin", "India", 50, text_val),
         ("Education", "B.Tech CSE", 95, text_val), # NO IoT!
@@ -514,7 +543,7 @@ def build_banner_svg(theme="dark"):
         ("Grid.Portfolio", "portfolio-website.vercel.app", 235, accent_col)
     ]
     
-    start_y = 112
+    start_y = 154
     spacing = 25
     curr_y = start_y
     val_right_x = 1144
@@ -536,8 +565,8 @@ def build_banner_svg(theme="dark"):
         svg.append(f'''<text x="{val_right_x}" y="{curr_y}" text-anchor="end" textLength="{val_len}" lengthAdjust="spacingAndGlyphs" fill="{val_col}" font-size="14" font-weight="600">{val}</text>''')
         curr_y += spacing
         
-    svg.append(f'<line x1="442" y1="565" x2="1144" y2="565" stroke="{border_col}" stroke-width="1"/>')
-    svg.append(f'<text x="442" y="585" fill="{text_muted}" font-size="11">SYS: LINUX_x86_64 · STATUS: 200 OK · UPTIME: 99.98% · REPO: hasim2006/hasim2006</text>')
+    svg.append(f'<line x1="442" y1="575" x2="1144" y2="575" stroke="{border_col}" stroke-width="1"/>')
+    svg.append(f'<text x="442" y="595" fill="{text_muted}" font-size="11">SYS: LINUX_x86_64 · STATUS: 200 OK · UPTIME: 99.98% · REPO: hasim2006/hasim2006</text>')
     
     svg.append('</svg>')
     return "\n".join(svg)
