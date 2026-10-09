@@ -155,24 +155,7 @@ def build_banner_svg(theme="dark"):
     # Fully transparent background: NO ENCLOSED BOX, merges directly with page background
     svg.append('<rect width="1180" height="430" fill="none"/>')
     
-    # =========================================================================
-    # SIDE BORDER ALIGNMENT: Full width edge-to-edge lines touching side borders (0 to 1180)
-    # =========================================================================
-    svg.append(f'''
-    <!-- Top & Bottom Edge Accents matching the container side borders -->
-    <line x1="0" y1="2" x2="1180" y2="2" stroke="url(#edgeGrad)" stroke-width="1.2"/>
-    <line x1="0" y1="428" x2="1180" y2="428" stroke="url(#edgeGrad)" stroke-width="1.2"/>
-    
-    <!-- Left Side Border Tech Marker (x=0) -->
-    <path d="M 0 16 H 24 M 0 414 H 24" stroke="{chrome_col}" stroke-width="2" opacity="0.8"/>
-    <circle cx="2" cy="16" r="2.5" fill="{chrome_col}"/>
-    <circle cx="2" cy="414" r="2.5" fill="{chrome_col}"/>
-    
-    <!-- Right Side Border Tech Marker (x=1180) -->
-    <path d="M 1180 16 H 1156 M 1180 414 H 1156" stroke="{chrome_col}" stroke-width="2" opacity="0.8"/>
-    <circle cx="1178" cy="16" r="2.5" fill="{chrome_col}"/>
-    <circle cx="1178" cy="414" r="2.5" fill="{chrome_col}"/>
-    ''')
+
     
     # =========================================================================
     # CENTER STAGE: PROMINENT PORTRAIT (Borderless, Free of Box)

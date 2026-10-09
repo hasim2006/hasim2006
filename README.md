@@ -8,11 +8,11 @@
 
   <br/>
 
-  <!-- PHASE 1: Clean Borderless Centered Portrait (Matching Left & Right Side Borders) -->
+  <!-- PHASE 1: Clean Borderless Centered Portrait (Zero Side Borders) -->
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/hasim2006/hasim2006/main/dark.svg?v=6">
-    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/hasim2006/hasim2006/main/light.svg?v=6">
-    <img alt="Mohammad Hasim" src="https://raw.githubusercontent.com/hasim2006/hasim2006/main/dark.svg?v=6" width="100%">
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/hasim2006/hasim2006/main/dark.svg?v=20261010_noborders">
+    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/hasim2006/hasim2006/main/light.svg?v=20261010_noborders">
+    <img alt="Mohammad Hasim" src="https://raw.githubusercontent.com/hasim2006/hasim2006/main/dark.svg?v=20261010_noborders" width="100%">
   </picture>
 
   <br/><br/>
