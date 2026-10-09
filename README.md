@@ -13,8 +13,8 @@
     <img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
   </a>
   &nbsp;&nbsp;
-  <a href="mailto:hasimsaudagar3@gmail.com">
-    <img src="https://img.shields.io/badge/Email-0A101F?style=for-the-badge&logo=gmail&logoColor=10B981&labelColor=0A101F" alt="Email" />
+  <a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=hasimsaudagar3@gmail.com" target="_blank">
+    <img src="https://img.shields.io/badge/Email-0A101F?style=for-the-badge&logo=gmail&logoColor=EA4335&labelColor=0A101F" alt="Email" />
   </a>
   &nbsp;&nbsp;
   <a href="https://portfolio-website-main-livid-theta.vercel.app/" target="_blank">
