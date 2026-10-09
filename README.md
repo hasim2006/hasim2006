@@ -8,11 +8,11 @@
 
   <br/>
 
-  <!-- PHASE 1: Cyber Decode (10s), Stable (15s), & Shatter into Pieces Animation -->
+  <!-- PHASE 1: 8-Second Shatter & Reassemble ("tut kar jude") Animation -->
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/hasim2006/hasim2006/main/dark.svg?v=decode_shatter_v1">
-    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/hasim2006/hasim2006/main/light.svg?v=decode_shatter_v1">
-    <img alt="Mohammad Hasim" src="https://raw.githubusercontent.com/hasim2006/hasim2006/main/dark.svg?v=decode_shatter_v1" width="100%">
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/hasim2006/hasim2006/main/dark.svg?v=shatter_assemble_8s">
+    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/hasim2006/hasim2006/main/light.svg?v=shatter_assemble_8s">
+    <img alt="Mohammad Hasim" src="https://raw.githubusercontent.com/hasim2006/hasim2006/main/dark.svg?v=shatter_assemble_8s" width="100%">
   </picture>
 
   <br/><br/>
@@ -64,12 +64,12 @@
 
   <br/><br/>
 
-  <!-- PHASE 4: Contribution Snake Animation (Auto-updated from live contributions) -->
-  <a href="https://github.com/hasim2006" target="_blank">
+  <!-- PHASE 4: Contribution Snake Animation (Auto-updated, Touch/Click to view all contributions) -->
+  <a href="https://github.com/hasim2006?tab=overview" target="_blank" title="Touch / Click here to view all your contributions on GitHub">
     <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/hasim2006/hasim2006/output/github-snake-dark.svg" />
-      <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/hasim2006/hasim2006/output/github-snake.svg" />
-      <img alt="Snake eating my contributions" src="https://raw.githubusercontent.com/hasim2006/hasim2006/output/github-snake-dark.svg" width="100%" />
+      <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/hasim2006/hasim2006/output/github-snake-dark.svg?v=slow32s" />
+      <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/hasim2006/hasim2006/output/github-snake.svg?v=slow32s" />
+      <img alt="Snake eating my contributions" src="https://raw.githubusercontent.com/hasim2006/hasim2006/output/github-snake-dark.svg?v=slow32s" width="100%" />
     </picture>
   </a>
 </div>

@@ -84,6 +84,9 @@ cx_center, cy_center = 590.0, 215.0
 ox = cx_center - photo_w / 2 # 417.5
 oy = cy_center - photo_h / 2 # 19.5
 
+# 8 Seconds Shatter & Reassemble ("tut kar jude") Cycle
+CYCLE_DUR = 8.0
+
 # 2. Extract runs per tile for Dark and Light
 def extract_tile_runs(dot_matrix):
     tiles_data = []
@@ -136,15 +139,17 @@ def extract_tile_runs(dot_matrix):
             tile_cx = ox + ((x1 + x2) / 2.0) * scale
             tile_cy = oy + ((y1 + y2) / 2.0) * scale
             
-            # Decode timing: 0s to 10s (progressive wave top-to-bottom with jitter)
-            # Row progress (0 to 1) + column / random jitter
+            # Staggered shatter & reassemble timing inside the 8.0s cycle
             row_frac = r / float(ROWS - 1)
-            jitter = np.random.uniform(-0.12, 0.12)
-            prog = np.clip(row_frac + jitter, 0.0, 1.0)
-            # t_dec from 0.1s to 8.8s so by t_dec + 1.1s <= 9.9s it is 100% loaded!
-            t_dec = 0.1 + prog * 8.6
+            jitter = np.random.uniform(-0.08, 0.08)
+            stagger = np.clip(row_frac + jitter, 0.0, 1.0) * 0.35 # 0s to 0.35s stagger
             
-            # Shatter vector at 25s: explodes outward from cx_center, cy_center
+            t_shatter_start = 1.6 + stagger      # Shatter begins ~1.6s - 2.0s
+            t_shattered = 3.3 + stagger          # Peak dispersion ~3.3s - 3.7s
+            t_reassemble_start = 4.3 + stagger   # Reassembly begins ~4.3s - 4.7s
+            t_reassembled = 6.2 + stagger        # Fully reassembled ~6.2s - 6.6s
+            
+            # Shatter dispersion vector
             vx = tile_cx - cx_center
             vy = tile_cy - cy_center
             base_dist = math.sqrt(vx * vx + vy * vy) + 1e-4
@@ -152,10 +157,10 @@ def extract_tile_runs(dot_matrix):
             spread = np.random.uniform(-0.35, 0.35)
             final_angle = base_angle + spread
             
-            disp_dist = np.random.uniform(90.0, 240.0)
+            disp_dist = np.random.uniform(90.0, 230.0)
             dx = disp_dist * math.cos(final_angle)
             dy = disp_dist * math.sin(final_angle)
-            rot = np.random.uniform(-120.0, 120.0)
+            rot = np.random.uniform(-110.0, 110.0)
             
             tiles_data.append({
                 'id': tile_idx,
@@ -164,7 +169,10 @@ def extract_tile_runs(dot_matrix):
                 'cx': tile_cx,
                 'cy': tile_cy,
                 'd': d_str,
-                't_dec': t_dec,
+                't_shatter_start': t_shatter_start,
+                't_shattered': t_shattered,
+                't_reassemble_start': t_reassemble_start,
+                't_reassembled': t_reassembled,
                 'dx': dx,
                 'dy': dy,
                 'rot': rot
@@ -192,8 +200,6 @@ for i in range(NUM_PARTICLES):
     particles.append((px, py, r, dx, dy))
 
 # 4. Build SVG Generator
-CYCLE_DUR = 30.0 # 30 seconds total cycle
-
 def build_banner_svg(theme="dark"):
     is_dark = (theme == "dark")
     chrome_col = "#22D3EE" if is_dark else "#0891B2"
@@ -219,39 +225,36 @@ def build_banner_svg(theme="dark"):
       </radialGradient>
     ''')
     
-    # CSS Keyframes for Laser Scanner & All Tiles
+    # CSS Keyframes for Laser Scanner & All Tiles (8 Seconds Shatter & Reassemble Cycle)
     css_rules = []
     css_rules.append('''
-      /* Laser Scanner Cycle: sweeps down during 0-10s decode, sweeps during 10-25s, fades at 25s shatter */
-      @keyframes laserScanCycle {
-        0% { transform: translateY(20px); opacity: 0.9; }
-        33.3% { transform: translateY(380px); opacity: 0.9; }
-        58.3% { transform: translateY(120px); opacity: 0.7; }
-        83.3% { transform: translateY(320px); opacity: 0.8; }
-        86% { transform: translateY(350px); opacity: 0; }
-        96% { transform: translateY(20px); opacity: 0; }
-        100% { transform: translateY(20px); opacity: 0.9; }
+      /* Laser Scanner: Synchronized with 8-second shatter and reassembly */
+      @keyframes laserScan8s {
+        0% { transform: translateY(20px); opacity: 0.85; }
+        22% { transform: translateY(380px); opacity: 0.85; }
+        42% { transform: translateY(200px); opacity: 0.35; }
+        56% { transform: translateY(380px); opacity: 0.35; }
+        82% { transform: translateY(20px); opacity: 0.95; }
+        100% { transform: translateY(20px); opacity: 0.85; }
       }
       .scanner-beam {
-        animation: laserScanCycle 30s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        animation: laserScan8s 8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
       }
     ''')
     
     # Generate Keyframe for each tile:
-    # 0s - 10s (0% - 33.33%): Decode / Load pixel by pixel
-    # 10s - 25s (33.33% - 83.33%): 15 SECONDS STABLE (100% loaded, sharp, perfectly motionless)
-    # 25s - 27.5s (83.33% - 91.67%): Shatters into small flying pieces
-    # 27.5s - 30s (91.67% - 100%): Fade reset for next cycle
+    # 0s - ~1.8s: Solid, fully assembled portrait
+    # 1.8s - 3.5s: Shatters outward into small pieces ("tut kar")
+    # 3.5s - 4.5s: Floating in small shards
+    # 4.5s - 6.5s: Flies back together, assembling into the complete face ("jude")
+    # 6.5s - 8.0s: Fully assembled & locked!
+    # Total cycle: EXACTLY 8.0 SECONDS!
     for t in tiles:
         tid = t['id']
-        t_start = t['t_dec']
-        t_load = t_start + 1.1 # 1.1s materialization time
-        
-        # Calculate percentage markers in 30s cycle
-        p_start = (t_start / CYCLE_DUR) * 100.0
-        p_loaded = (t_load / CYCLE_DUR) * 100.0
-        p_shatter_start = (25.0 / CYCLE_DUR) * 100.0 # 83.33%
-        p_shattered = (27.2 / CYCLE_DUR) * 100.0     # 90.67%
+        p_shatter_start = (t['t_shatter_start'] / CYCLE_DUR) * 100.0
+        p_shattered = (t['t_shattered'] / CYCLE_DUR) * 100.0
+        p_reassemble_start = (t['t_reassemble_start'] / CYCLE_DUR) * 100.0
+        p_reassembled = (t['t_reassembled'] / CYCLE_DUR) * 100.0
         
         dx = t['dx']
         dy = t['dy']
@@ -260,14 +263,6 @@ def build_banner_svg(theme="dark"):
         css_rules.append(f'''
           @keyframes kf_tile_{tid} {{
             0% {{
-              opacity: 0;
-              transform: scale(0.4);
-            }}
-            {p_start:.2f}% {{
-              opacity: 0;
-              transform: scale(0.4);
-            }}
-            {p_loaded:.2f}% {{
               opacity: 1;
               transform: translate(0px, 0px) scale(1) rotate(0deg);
             }}
@@ -276,17 +271,25 @@ def build_banner_svg(theme="dark"):
               transform: translate(0px, 0px) scale(1) rotate(0deg);
             }}
             {p_shattered:.2f}% {{
-              opacity: 0;
-              transform: translate({dx:.1f}px, {dy:.1f}px) scale(0.15) rotate({rot:.1f}deg);
+              opacity: 0.85;
+              transform: translate({dx:.1f}px, {dy:.1f}px) scale(0.35) rotate({rot:.1f}deg);
+            }}
+            {p_reassemble_start:.2f}% {{
+              opacity: 0.85;
+              transform: translate({dx * 1.08:.1f}px, {dy * 1.08:.1f}px) scale(0.32) rotate({rot * 1.05:.1f}deg);
+            }}
+            {p_reassembled:.2f}% {{
+              opacity: 1;
+              transform: translate(0px, 0px) scale(1) rotate(0deg);
             }}
             100% {{
-              opacity: 0;
-              transform: translate(0px, 0px) scale(0.4);
+              opacity: 1;
+              transform: translate(0px, 0px) scale(1) rotate(0deg);
             }}
           }}
           .tile-{tid} {{
             transform-origin: {t['cx']:.1f}px {t['cy']:.1f}px;
-            animation: kf_tile_{tid} 30s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+            animation: kf_tile_{tid} 8s cubic-bezier(0.25, 0.9, 0.25, 1) infinite;
           }}
         ''')
     
@@ -298,7 +301,7 @@ def build_banner_svg(theme="dark"):
     # Transparent Canvas (No box, zero borders)
     svg.append('<rect width="1180" height="430" fill="none"/>')
     
-    # Ambient Halos & Concentric Reticles (Always gently pulsing in background)
+    # Ambient Halos & Concentric Reticles (Pulsing background)
     svg.append(f'<circle cx="{cx_center}" cy="{cy_center}" r="215" fill="url(#haloGlow)"/>')
     svg.append(f'<circle cx="{cx_center}" cy="{cy_center}" r="190" stroke="{border_col}" stroke-width="1" stroke-dasharray="4 6" fill="none"/>')
     svg.append(f'<circle cx="{cx_center}" cy="{cy_center}" r="228" stroke="{chrome_col}22" stroke-width="1" stroke-dasharray="2 12" fill="none"/>')
@@ -320,13 +323,13 @@ def build_banner_svg(theme="dark"):
     svg.append(f'<clipPath id="portraitClip"><rect x="{cx_center - 185}" y="20" width="370" height="390" rx="14"/></clipPath>')
     svg.append('<g clip-path="url(#portraitClip)">')
     
-    # Render all small tile paths (Pixel-by-pixel decode & shatter into pieces)
+    # Render all small tile paths (Shatter into pieces and reassemble back together)
     for t in tiles:
         tid = t['id']
         d_str = t['d']
         svg.append(f'<path fill="{portrait_col}" d="{d_str}" class="tile-{tid}" shape-rendering="crispEdges"/>')
     
-    # Scanning Cyber Laser Beam (Synchronized with 30s cycle)
+    # Scanning Cyber Laser Beam (Synchronized with 8s cycle)
     svg.append(f'''
       <rect x="{cx_center - 175}" y="0" width="350" height="28" fill="url(#scanGrad)" class="scanner-beam"/>
     ''')
@@ -335,14 +338,14 @@ def build_banner_svg(theme="dark"):
     svg.append('</svg>')
     return "\n".join(svg)
 
-print("Compiling dark and light decode-and-shatter SVGs...")
+print("Compiling dark and light 8-second shatter & reassemble SVGs...")
 dark_svg_code = build_banner_svg("dark")
 light_svg_code = build_banner_svg("light")
 
 # Validate XML syntax with ElementTree
 ET.fromstring(dark_svg_code)
 ET.fromstring(light_svg_code)
-print("XML validation PASSED for both decode-and-shatter SVGs!")
+print("XML validation PASSED for both 8s shatter & reassemble SVGs!")
 
 dark_path = os.path.join(output_dir, "dark.svg")
 light_path = os.path.join(output_dir, "light.svg")
