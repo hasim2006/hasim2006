@@ -95,13 +95,12 @@ def extract_runs(dot_matrix):
 
 runs_dark = extract_runs(dots_dark)
 runs_light = extract_runs(dots_light)
-print(f"Extracted runs - Dark: {len(runs_dark)}, Light: {len(runs_light)}")
 
-# 2. Ambient Floating Particles for Tech Atmosphere (Centered around cx=590, cy=255)
+# 2. Ambient Floating Particles for Tech Atmosphere (Centered around cx=590, cy=215)
 NUM_PARTICLES = 140
 np.random.seed(42)
 particles = []
-cx_center, cy_center = 590.0, 255.0
+cx_center, cy_center = 590.0, 215.0
 for i in range(NUM_PARTICLES):
     angle = np.random.uniform(0, 2 * math.pi)
     dist = np.random.uniform(120, 260)
@@ -112,155 +111,78 @@ for i in range(NUM_PARTICLES):
     dy = np.random.uniform(-18, 18)
     particles.append((px, py, r, dx, dy))
 
-# 3. Build SVG Generator
+# 3. Build SVG Generator (Borderless, Edge-to-Edge Matching Side Borders)
 def build_banner_svg(theme="dark"):
     is_dark = (theme == "dark")
-    bg_col = "#0A101F" if is_dark else "#F8FAFC"
     chrome_col = "#22D3EE" if is_dark else "#0891B2"
     border_col = "#1E293B" if is_dark else "#CBD5E1"
     portrait_col = "#A78BFA" if is_dark else "#7C3AED"
-    accent_col = "#10B981"
-    text_muted = "#64748B"
-    text_label = "#94A3B8" if is_dark else "#475569"
-    text_val = "#F8FAFC" if is_dark else "#0F172A"
     
     runs = runs_dark if is_dark else runs_light
     
-    # Scale and center photo in the center stage (Clear, prominent, unconstrained)
     scale = 1.15
     photo_w = 300 * scale # 345
     photo_h = 340 * scale # 391
     ox = cx_center - photo_w / 2 # 417.5
-    oy = cy_center - photo_h / 2 + 8 # 67.5
+    oy = cy_center - photo_h / 2 # 19.5
     
     svg = []
-    svg.append('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 500" width="100%" height="100%">')
+    svg.append('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 430" width="100%" height="100%">')
     svg.append('<defs>')
     
-    # Gradients & Filters
     svg.append('''
       <linearGradient id="scanGrad" x1="0%" y1="0%" x2="0%" y2="100%">
         <stop offset="0%" stop-color="#22D3EE" stop-opacity="0"/>
         <stop offset="50%" stop-color="#22D3EE" stop-opacity="0.45"/>
         <stop offset="100%" stop-color="#22D3EE" stop-opacity="0"/>
       </linearGradient>
+      <linearGradient id="edgeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#22D3EE" stop-opacity="0.85"/>
+        <stop offset="25%" stop-color="#22D3EE" stop-opacity="0.25"/>
+        <stop offset="50%" stop-color="#A78BFA" stop-opacity="0.15"/>
+        <stop offset="75%" stop-color="#10B981" stop-opacity="0.25"/>
+        <stop offset="100%" stop-color="#10B981" stop-opacity="0.85"/>
+      </linearGradient>
       <radialGradient id="haloGlow" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="#22D3EE" stop-opacity="0.22"/>
+        <stop offset="0%" stop-color="#22D3EE" stop-opacity="0.24"/>
         <stop offset="60%" stop-color="#A78BFA" stop-opacity="0.08"/>
         <stop offset="100%" stop-color="#22D3EE" stop-opacity="0"/>
       </radialGradient>
-      <radialGradient id="reticleGlow" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="#A78BFA" stop-opacity="0.14"/>
-        <stop offset="100%" stop-color="#A78BFA" stop-opacity="0"/>
-      </radialGradient>
     ''')
     
-    svg.append('<style>')
-    svg.append(f'''
-      @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&amp;display=swap');
-      text {{ font-family: 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, monospace; }}
-      .traffic-red {{ fill: #EF4444; }}
-      .traffic-yellow {{ fill: #F59E0B; }}
-      .traffic-green {{ fill: #10B981; }}
-      .chrome {{ fill: {chrome_col}; }}
-      .title {{ fill: {text_muted}; font-size: 13px; font-weight: 500; }}
-      .live-dot {{ fill: #EF4444; }}
-      .live-text {{ fill: #EF4444; font-size: 12px; font-weight: 700; }}
-      .pill-bg {{ fill: {chrome_col}1F; stroke: {chrome_col}; stroke-width: 1; }}
-      .pill-text {{ fill: {chrome_col}; font-size: 13px; font-weight: 600; }}
-      .sec-hdr {{ fill: {chrome_col}; font-size: 12.5px; font-weight: 700; letter-spacing: 1.5px; }}
-      .vertex-mark {{ fill: {chrome_col}; }}
-      .vertex-coord {{ fill: {chrome_col}99; font-size: 9.5px; font-family: monospace; font-weight: 600; }}
-      .bracket {{ stroke: {chrome_col}; stroke-width: 2.2; fill: none; }}
-    ''')
-    svg.append('</style>')
     svg.append('</defs>')
     
-    # 1. Main Background Card (Merged seamlessly with background color)
-    svg.append(f'<rect width="1180" height="500" rx="12" fill="{bg_col}" stroke="{border_col}" stroke-width="1.2"/>')
+    # Fully transparent background: NO ENCLOSED BOX, merges directly with page background
+    svg.append('<rect width="1180" height="430" fill="none"/>')
     
     # =========================================================================
-    # CORNERS, EDGES & VERTICES (Requested: corners and edges with vertices)
+    # SIDE BORDER ALIGNMENT: Full width edge-to-edge lines touching side borders (0 to 1180)
     # =========================================================================
     svg.append(f'''
-    <!-- Vertices & Corner Brackets -->
-    <g>
-      <!-- Vertex 1: Top-Left (20, 20) -->
-      <path d="M 20 54 V 20 H 54" class="bracket"/>
-      <circle cx="20" cy="20" r="3.5" class="vertex-mark"/>
-      <text x="26" y="68" class="vertex-coord">V1 [0,0]</text>
-      
-      <!-- Vertex 2: Top-Right (1160, 20) -->
-      <path d="M 1160 54 V 20 H 1126" class="bracket"/>
-      <circle cx="1160" cy="20" r="3.5" class="vertex-mark"/>
-      <text x="1108" y="68" class="vertex-coord">V2 [1180,0]</text>
-      
-      <!-- Vertex 3: Bottom-Left (20, 480) -->
-      <path d="M 20 446 V 480 H 54" class="bracket"/>
-      <circle cx="20" cy="480" r="3.5" class="vertex-mark"/>
-      <text x="26" y="438" class="vertex-coord">V3 [0,500]</text>
-      
-      <!-- Vertex 4: Bottom-Right (1160, 480) -->
-      <path d="M 1160 446 V 480 H 1126" class="bracket"/>
-      <circle cx="1160" cy="480" r="3.5" class="vertex-mark"/>
-      <text x="1090" y="438" class="vertex-coord">V4 [1180,500]</text>
-      
-      <!-- Midpoint Crosshair Vertices (+) -->
-      <g stroke="{chrome_col}88" stroke-width="1">
-        <!-- Top Edge Crosshair -->
-        <line x1="590" y1="14" x2="590" y2="26"/>
-        <line x1="584" y1="20" x2="596" y2="20"/>
-        
-        <!-- Bottom Edge Crosshair -->
-        <line x1="590" y1="474" x2="590" y2="486"/>
-        <line x1="584" y1="480" x2="596" y2="480"/>
-        
-        <!-- Left Edge Crosshair -->
-        <line x1="14" y1="250" x2="26" y2="250"/>
-        <line x1="20" y1="244" x2="20" y2="256"/>
-        
-        <!-- Right Edge Crosshair -->
-        <line x1="1154" y1="250" x2="1166" y2="250"/>
-        <line x1="1160" y1="244" x2="1160" y2="256"/>
-      </g>
-    </g>
+    <!-- Top & Bottom Edge Accents matching the container side borders -->
+    <line x1="0" y1="2" x2="1180" y2="2" stroke="url(#edgeGrad)" stroke-width="1.2"/>
+    <line x1="0" y1="428" x2="1180" y2="428" stroke="url(#edgeGrad)" stroke-width="1.2"/>
+    
+    <!-- Left Side Border Tech Marker (x=0) -->
+    <path d="M 0 16 H 24 M 0 414 H 24" stroke="{chrome_col}" stroke-width="2" opacity="0.8"/>
+    <circle cx="2" cy="16" r="2.5" fill="{chrome_col}"/>
+    <circle cx="2" cy="414" r="2.5" fill="{chrome_col}"/>
+    
+    <!-- Right Side Border Tech Marker (x=1180) -->
+    <path d="M 1180 16 H 1156 M 1180 414 H 1156" stroke="{chrome_col}" stroke-width="2" opacity="0.8"/>
+    <circle cx="1178" cy="16" r="2.5" fill="{chrome_col}"/>
+    <circle cx="1178" cy="414" r="2.5" fill="{chrome_col}"/>
     ''')
     
-    # Top Chrome Header Bar
-    svg.append(f'<line x1="20" y1="44" x2="1160" y2="44" stroke="{border_col}" stroke-width="1"/>')
-    svg.append('<circle cx="60" cy="32" r="5" class="traffic-red"/>')
-    svg.append('<circle cx="76" cy="32" r="5" class="traffic-yellow"/>')
-    svg.append('<circle cx="92" cy="32" r="5" class="traffic-green"/>')
-    svg.append('<text x="590" y="36" text-anchor="middle" class="title">terminal // portrait.id --live</text>')
-    
-    # LIVE indicator
-    svg.append('<g>')
-    svg.append('<circle cx="1010" cy="32" r="4" class="live-dot">')
-    svg.append('<animate attributeName="opacity" values="1;0.2;1" dur="1.8s" repeatCount="indefinite"/>')
-    svg.append('</circle>')
-    svg.append('<text x="1022" y="36" class="live-text">LIVE</text>')
-    svg.append('</g>')
-    
-    # User Handle Pill
-    svg.append('<g>')
-    svg.append('<rect x="1066" y="20" width="88" height="24" rx="12" class="pill-bg"/>')
-    svg.append('<text x="1110" y="36" text-anchor="middle" class="pill-text">@hasim2006</text>')
-    svg.append('</g>')
-    
     # =========================================================================
-    # CENTER STAGE: MOHAMMAD HASIM PORTRAIT (Pure, prominent, no side clutter)
+    # CENTER STAGE: PROMINENT PORTRAIT (Borderless, Free of Box)
     # =========================================================================
-    # Halos and subtle cybernetic rings around portrait
-    svg.append(f'<circle cx="{cx_center}" cy="{cy_center}" r="210" fill="url(#haloGlow)"/>')
-    svg.append(f'<circle cx="{cx_center}" cy="{cy_center}" r="185" stroke="{border_col}" stroke-width="1" stroke-dasharray="4 6" fill="none"/>')
-    svg.append(f'<circle cx="{cx_center}" cy="{cy_center}" r="225" stroke="{chrome_col}22" stroke-width="1" stroke-dasharray="2 12" fill="none"/>')
+    # Halo and concentric reticle rings around portrait
+    svg.append(f'<circle cx="{cx_center}" cy="{cy_center}" r="215" fill="url(#haloGlow)"/>')
+    svg.append(f'<circle cx="{cx_center}" cy="{cy_center}" r="190" stroke="{border_col}" stroke-width="1" stroke-dasharray="4 6" fill="none"/>')
+    svg.append(f'<circle cx="{cx_center}" cy="{cy_center}" r="228" stroke="{chrome_col}22" stroke-width="1" stroke-dasharray="2 12" fill="none"/>')
     
-    # Header tag above portrait
-    svg.append(f'''
-    <text x="{cx_center}" y="70" text-anchor="middle" class="sec-hdr">PORTRAIT.ID // MOHAMMAD HASIM · FULL-STACK &amp; AI DEVELOPER</text>
-    ''')
-    
-    # Floating Ambient Cyber Particles around portrait
+    # Floating Ambient Cyber Particles
     svg.append(f'<g id="ambient-particles" fill="{chrome_col}">')
     for px, py, r, dx, dy in particles:
         svg.append(f'<circle cx="{px:.1f}" cy="{py:.1f}" r="{r:.1f}" opacity="0.65">')
@@ -274,10 +196,10 @@ def build_banner_svg(theme="dark"):
     svg.append('</g>')
     
     # Clip-path to frame portrait cleanly
-    svg.append(f'<clipPath id="portraitClip"><rect x="{cx_center - 185}" y="76" width="370" height="375" rx="8"/></clipPath>')
+    svg.append(f'<clipPath id="portraitClip"><rect x="{cx_center - 185}" y="20" width="370" height="390" rx="14"/></clipPath>')
     svg.append('<g clip-path="url(#portraitClip)">')
     
-    # Permanent High-Resolution Dithered Portrait (Always Visible)
+    # Permanent High-Resolution Dithered Portrait
     path_runs = []
     for y, sx, length in runs:
         px = ox + sx * scale
@@ -291,32 +213,23 @@ def build_banner_svg(theme="dark"):
     
     # Cybernetic Scanning Laser Beam
     svg.append(f'''
-      <rect x="{cx_center - 175}" y="80" width="350" height="26" fill="url(#scanGrad)" opacity="0.8">
-        <animate attributeName="y" values="80; 430; 80" dur="4.2s" repeatCount="indefinite"/>
+      <rect x="{cx_center - 175}" y="25" width="350" height="26" fill="url(#scanGrad)" opacity="0.8">
+        <animate attributeName="y" values="25; 380; 25" dur="4.2s" repeatCount="indefinite"/>
       </rect>
     ''')
     svg.append('</g>') # End portraitClip
     
-    # Bottom HUD Status Footer Bar
-    svg.append(f'<line x1="20" y1="458" x2="1160" y2="458" stroke="{border_col}" stroke-width="1"/>')
-    svg.append(f'''
-    <g font-size="11" fill="{text_muted}">
-      <text x="60" y="476">SYS: LINUX_x86_64 · STATUS: 200 OK · PORTRAIT: MOHAMMAD HASIM · REPO: hasim2006/hasim2006</text>
-      <text x="1120" y="476" text-anchor="end" fill="{chrome_col}">HUD.CORE // v4.0 · B.TECH CSE</text>
-    </g>
-    ''')
-    
     svg.append('</svg>')
     return "\n".join(svg)
 
-print("Compiling dark and light SVGs...")
+print("Compiling dark and light borderless SVGs...")
 dark_svg_code = build_banner_svg("dark")
 light_svg_code = build_banner_svg("light")
 
 # Validate XML syntax with ElementTree
 ET.fromstring(dark_svg_code)
 ET.fromstring(light_svg_code)
-print("XML validation PASSED for both dark and light SVGs!")
+print("XML validation PASSED for both borderless SVGs!")
 
 dark_path = os.path.join(output_dir, "dark.svg")
 light_path = os.path.join(output_dir, "light.svg")
