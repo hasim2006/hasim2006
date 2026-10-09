@@ -222,6 +222,19 @@ def build_banner_svg(theme="dark"):
       .row-val {{ fill: {text_val}; font-size: 14px; font-weight: 600; }}
       .leader {{ stroke: {leader_col}; stroke-dasharray: 2 4; stroke-width: 1.2; }}
       .accent {{ fill: {accent_col}; }}
+      @keyframes wave-hand {{
+        0% {{ transform: rotate(0deg); }}
+        15% {{ transform: rotate(24deg); }}
+        30% {{ transform: rotate(-10deg); }}
+        45% {{ transform: rotate(22deg); }}
+        60% {{ transform: rotate(-6deg); }}
+        75% {{ transform: rotate(12deg); }}
+        100% {{ transform: rotate(0deg); }}
+      }}
+      .wave-hand {{
+        transform-origin: 172px 78px;
+        animation: wave-hand 2.2s infinite ease-in-out;
+      }}
     ''')
     svg.append('</style>')
     svg.append('</defs>')
@@ -265,14 +278,7 @@ def build_banner_svg(theme="dark"):
       <text x="56" y="78" font-size="21" font-weight="700" fill="{text_val}">Hi there </text>
       
       <!-- Animated Waving Hand Emoji -->
-      <g transform="translate(160, 58)">
-        <g>
-          <animateTransform attributeName="transform" type="rotate"
-            values="0 10 18; 24 10 18; -10 10 18; 24 10 18; 0 10 18"
-            dur="1.8s" repeatCount="indefinite"/>
-          <text x="0" y="21" font-size="22">👋</text>
-        </g>
-      </g>
+      <text x="160" y="78" font-size="22" class="wave-hand">👋</text>
       
       <text x="194" y="78" font-size="21" font-weight="500" fill="{text_muted}"> I&apos;m </text>
       
