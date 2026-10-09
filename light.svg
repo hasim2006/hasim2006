@@ -100,17 +100,19 @@
       <text x="56" y="78" font-size="21" font-weight="700" fill="#0F172A">Hi there </text>
       
       <!-- Animated Waving Hand Emoji -->
-      <g transform="translate(162, 57)">
-        <text x="0" y="21" font-size="22">👋</text>
-        <animateTransform attributeName="transform" type="rotate"
-          values="0 8 18; 26 8 18; -12 8 18; 26 8 18; 0 8 18"
-          dur="1.8s" repeatCount="indefinite"/>
+      <g transform="translate(160, 58)">
+        <g>
+          <animateTransform attributeName="transform" type="rotate"
+            values="0 10 18; 24 10 18; -10 10 18; 24 10 18; 0 10 18"
+            dur="1.8s" repeatCount="indefinite"/>
+          <text x="0" y="21" font-size="22">👋</text>
+        </g>
       </g>
       
-      <text x="198" y="78" font-size="21" font-weight="500" fill="#64748B"> I&apos;m </text>
+      <text x="194" y="78" font-size="21" font-weight="500" fill="#64748B"> I&apos;m </text>
       
       <!-- Mohammad Hasim with Dynamic Glowing Gradient Transition -->
-      <text x="254" y="78" font-size="22" font-weight="800" fill="url(#nameGrad)" letter-spacing="0.5">
+      <text x="246" y="78" font-size="22" font-weight="800" fill="url(#nameGrad)" letter-spacing="0.5">
         Mohammad Hasim
         <animate attributeName="opacity" values="0.85; 1; 0.85" dur="2.5s" repeatCount="indefinite"/>
       </text>
