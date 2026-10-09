@@ -225,22 +225,22 @@ def build_banner_svg(theme="dark"):
       <!-- Vertex 1: Top-Left (20, 20) -->
       <path d="M 20 54 V 20 H 54" class="bracket"/>
       <circle cx="20" cy="20" r="3.5" class="vertex-mark"/>
-      <text x="28" y="32" class="vertex-coord">V1 [0,0]</text>
+      <text x="26" y="68" class="vertex-coord">V1 [0,0]</text>
       
       <!-- Vertex 2: Top-Right (1160, 20) -->
       <path d="M 1160 54 V 20 H 1126" class="bracket"/>
       <circle cx="1160" cy="20" r="3.5" class="vertex-mark"/>
-      <text x="1100" y="32" class="vertex-coord">V2 [1180,0]</text>
+      <text x="1108" y="68" class="vertex-coord">V2 [1180,0]</text>
       
       <!-- Vertex 3: Bottom-Left (20, 520) -->
       <path d="M 20 486 V 520 H 54" class="bracket"/>
       <circle cx="20" cy="520" r="3.5" class="vertex-mark"/>
-      <text x="28" y="512" class="vertex-coord">V3 [0,540]</text>
+      <text x="26" y="476" class="vertex-coord">V3 [0,540]</text>
       
       <!-- Vertex 4: Bottom-Right (1160, 520) -->
       <path d="M 1160 486 V 520 H 1126" class="bracket"/>
       <circle cx="1160" cy="520" r="3.5" class="vertex-mark"/>
-      <text x="1080" y="512" class="vertex-coord">V4 [1180,540]</text>
+      <text x="1090" y="476" class="vertex-coord">V4 [1180,540]</text>
       
       <!-- Midpoint Crosshair Vertices (+) -->
       <g stroke="{chrome_col}88" stroke-width="1">
@@ -265,9 +265,9 @@ def build_banner_svg(theme="dark"):
     
     # Top Chrome Header Bar
     svg.append(f'<line x1="20" y1="44" x2="1160" y2="44" stroke="{border_col}" stroke-width="1"/>')
-    svg.append('<circle cx="44" cy="32" r="5" class="traffic-red"/>')
-    svg.append('<circle cx="60" cy="32" r="5" class="traffic-yellow"/>')
-    svg.append('<circle cx="76" cy="32" r="5" class="traffic-green"/>')
+    svg.append('<circle cx="60" cy="32" r="5" class="traffic-red"/>')
+    svg.append('<circle cx="76" cy="32" r="5" class="traffic-yellow"/>')
+    svg.append('<circle cx="92" cy="32" r="5" class="traffic-green"/>')
     svg.append('<text x="590" y="36" text-anchor="middle" class="title">terminal // visual.core --stream</text>')
     
     # LIVE indicator
