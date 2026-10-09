@@ -8,11 +8,11 @@
 
   <br/>
 
-  <!-- PHASE 1: 8-Second Shatter & Reassemble ("tut kar jude") Animation -->
+  <!-- PHASE 1: 10s Progressive Pixel Decode, 15s Stable Full Portrait & Shatter into Small Pieces -->
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/hasim2006/hasim2006/main/dark.svg?v=shatter_assemble_8s">
-    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/hasim2006/hasim2006/main/light.svg?v=shatter_assemble_8s">
-    <img alt="Mohammad Hasim" src="https://raw.githubusercontent.com/hasim2006/hasim2006/main/dark.svg?v=shatter_assemble_8s" width="100%">
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/hasim2006/hasim2006/main/dark.svg?v=pixel_decode_10s_15s_shatter">
+    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/hasim2006/hasim2006/main/light.svg?v=pixel_decode_10s_15s_shatter">
+    <img alt="Mohammad Hasim" src="https://raw.githubusercontent.com/hasim2006/hasim2006/main/dark.svg?v=pixel_decode_10s_15s_shatter" width="100%">
   </picture>
 
   <br/><br/>

@@ -75,8 +75,8 @@ def full_dither_light(mat_in):
 dots_dark = full_dither_dark(arr_gray)
 dots_light = full_dither_light(arr_gray)
 
-# Geometry
-COLS, ROWS = 11, 13
+# Geometry: Fine 12x14 grid for small pixel tiles ("joint with small pixcels to pixcels")
+COLS, ROWS = 12, 14
 scale = 1.15
 photo_w = 300 * scale # 345
 photo_h = 340 * scale # 391
@@ -84,8 +84,12 @@ cx_center, cy_center = 590.0, 215.0
 ox = cx_center - photo_w / 2 # 417.5
 oy = cy_center - photo_h / 2 # 19.5
 
-# 8 Seconds Shatter & Reassemble ("tut kar jude") Cycle
-CYCLE_DUR = 8.0
+# Total cycle duration: 30 seconds
+# 0s - 10s: Progressive pixel-by-pixel decode & materialization (10 seconds)
+# 10s - 25s: 100% fully assembled and stable portrait (15 full seconds)
+# 25s - 28s: Shatters outward into small pieces ("choote pieces mai tut jaye")
+# 28s - 30s: Dissolves and seamlessly restarts next cycle
+CYCLE_DUR = 30.0
 
 # 2. Extract runs per tile for Dark and Light
 def extract_tile_runs(dot_matrix):
@@ -139,28 +143,33 @@ def extract_tile_runs(dot_matrix):
             tile_cx = ox + ((x1 + x2) / 2.0) * scale
             tile_cy = oy + ((y1 + y2) / 2.0) * scale
             
-            # Staggered shatter & reassemble timing inside the 8.0s cycle
+            # Progressive decode timing: 0.1s to 8.8s start + 1.1s decode time
+            # By 9.9s (< 10.0s), 100% of all tiles across the face are completely locked!
             row_frac = r / float(ROWS - 1)
-            jitter = np.random.uniform(-0.08, 0.08)
-            stagger = np.clip(row_frac + jitter, 0.0, 1.0) * 0.35 # 0s to 0.35s stagger
+            col_frac = c / float(COLS - 1)
+            jitter = np.random.uniform(-0.10, 0.10)
+            prog = np.clip(row_frac * 0.86 + col_frac * 0.08 + jitter, 0.0, 1.0)
+            t_start = 0.1 + prog * 8.6
+            t_mid1 = t_start + 0.35
+            t_mid2 = t_start + 0.70
+            t_loaded = t_start + 1.05
             
-            t_shatter_start = 1.6 + stagger      # Shatter begins ~1.6s - 2.0s
-            t_shattered = 3.3 + stagger          # Peak dispersion ~3.3s - 3.7s
-            t_reassemble_start = 4.3 + stagger   # Reassembly begins ~4.3s - 4.7s
-            t_reassembled = 6.2 + stagger        # Fully reassembled ~6.2s - 6.6s
+            # Micro-jitter for encode/decode holographic flicker
+            jx = np.random.uniform(-5.0, 5.0)
+            jy = np.random.uniform(-4.0, 4.0)
             
-            # Shatter dispersion vector
+            # Shatter vector at 25s (explode outward in small pieces)
             vx = tile_cx - cx_center
             vy = tile_cy - cy_center
             base_dist = math.sqrt(vx * vx + vy * vy) + 1e-4
             base_angle = math.atan2(vy, vx)
-            spread = np.random.uniform(-0.35, 0.35)
+            spread = np.random.uniform(-0.40, 0.40)
             final_angle = base_angle + spread
             
-            disp_dist = np.random.uniform(90.0, 230.0)
+            disp_dist = np.random.uniform(90.0, 240.0)
             dx = disp_dist * math.cos(final_angle)
             dy = disp_dist * math.sin(final_angle)
-            rot = np.random.uniform(-110.0, 110.0)
+            rot = np.random.uniform(-120.0, 120.0)
             
             tiles_data.append({
                 'id': tile_idx,
@@ -169,10 +178,12 @@ def extract_tile_runs(dot_matrix):
                 'cx': tile_cx,
                 'cy': tile_cy,
                 'd': d_str,
-                't_shatter_start': t_shatter_start,
-                't_shattered': t_shattered,
-                't_reassemble_start': t_reassemble_start,
-                't_reassembled': t_reassembled,
+                't_start': t_start,
+                't_mid1': t_mid1,
+                't_mid2': t_mid2,
+                't_loaded': t_loaded,
+                'jx': jx,
+                'jy': jy,
                 'dx': dx,
                 'dy': dy,
                 'rot': rot
@@ -225,37 +236,41 @@ def build_banner_svg(theme="dark"):
       </radialGradient>
     ''')
     
-    # CSS Keyframes for Laser Scanner & All Tiles (8 Seconds Shatter & Reassemble Cycle)
+    # CSS Keyframes for Laser Scanner & All Tiles
     css_rules = []
     css_rules.append('''
-      /* Laser Scanner: Synchronized with 8-second shatter and reassembly */
-      @keyframes laserScan8s {
-        0% { transform: translateY(20px); opacity: 0.85; }
-        22% { transform: translateY(380px); opacity: 0.85; }
-        42% { transform: translateY(200px); opacity: 0.35; }
-        56% { transform: translateY(380px); opacity: 0.35; }
-        82% { transform: translateY(20px); opacity: 0.95; }
-        100% { transform: translateY(20px); opacity: 0.85; }
+      /* Laser Scanner: 0-10s sweeps down with decode wave, 10-25s sweeps across assembled face, 25s fades at shatter */
+      @keyframes laserScan30s {
+        0% { transform: translateY(20px); opacity: 0.9; }
+        33.33% { transform: translateY(380px); opacity: 0.9; }
+        58.0% { transform: translateY(140px); opacity: 0.65; }
+        83.33% { transform: translateY(340px); opacity: 0.85; }
+        85.0% { transform: translateY(360px); opacity: 0.95; }
+        88.0% { transform: translateY(370px); opacity: 0; }
+        98.0% { transform: translateY(20px); opacity: 0; }
+        100% { transform: translateY(20px); opacity: 0.9; }
       }
       .scanner-beam {
-        animation: laserScan8s 8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        animation: laserScan30s 30s cubic-bezier(0.4, 0, 0.2, 1) infinite;
       }
     ''')
     
-    # Generate Keyframe for each tile:
-    # 0s - ~1.8s: Solid, fully assembled portrait
-    # 1.8s - 3.5s: Shatters outward into small pieces ("tut kar")
-    # 3.5s - 4.5s: Floating in small shards
-    # 4.5s - 6.5s: Flies back together, assembling into the complete face ("jude")
-    # 6.5s - 8.0s: Fully assembled & locked!
-    # Total cycle: EXACTLY 8.0 SECONDS!
+    # Keyframe for each tile:
+    # 0s - 10s: Encode/decode pixel-by-pixel load (10 seconds)
+    # 10s - 25s: 15 FULL SECONDS STABLE & FULLY ASSEMBLED (100% solid and clear)
+    # 25s - 27.8s: Shatters into small pieces ("choote pieces mai tut jaye")
+    # 27.8s - 30s: Dissolves to 0 opacity and resets for next cycle
     for t in tiles:
         tid = t['id']
-        p_shatter_start = (t['t_shatter_start'] / CYCLE_DUR) * 100.0
-        p_shattered = (t['t_shattered'] / CYCLE_DUR) * 100.0
-        p_reassemble_start = (t['t_reassemble_start'] / CYCLE_DUR) * 100.0
-        p_reassembled = (t['t_reassembled'] / CYCLE_DUR) * 100.0
+        p_start = (t['t_start'] / CYCLE_DUR) * 100.0
+        p_mid1 = (t['t_mid1'] / CYCLE_DUR) * 100.0
+        p_mid2 = (t['t_mid2'] / CYCLE_DUR) * 100.0
+        p_loaded = (t['t_loaded'] / CYCLE_DUR) * 100.0
+        p_shatter_start = (25.0 / CYCLE_DUR) * 100.0 # Exactly 25.0s (15s after 10s load)
+        p_shattered = (27.8 / CYCLE_DUR) * 100.0     # 27.8s fully dispersed
         
+        jx = t['jx']
+        jy = t['jy']
         dx = t['dx']
         dy = t['dy']
         rot = t['rot']
@@ -263,6 +278,22 @@ def build_banner_svg(theme="dark"):
         css_rules.append(f'''
           @keyframes kf_tile_{tid} {{
             0% {{
+              opacity: 0;
+              transform: scale(0.6);
+            }}
+            {p_start:.2f}% {{
+              opacity: 0;
+              transform: scale(0.6);
+            }}
+            {p_mid1:.2f}% {{
+              opacity: 0.55;
+              transform: translate({jx:.1f}px, {jy:.1f}px) scale(1.1);
+            }}
+            {p_mid2:.2f}% {{
+              opacity: 0.85;
+              transform: translate({-jx*0.4:.1f}px, {-jy*0.4:.1f}px) scale(0.96);
+            }}
+            {p_loaded:.2f}% {{
               opacity: 1;
               transform: translate(0px, 0px) scale(1) rotate(0deg);
             }}
@@ -271,25 +302,17 @@ def build_banner_svg(theme="dark"):
               transform: translate(0px, 0px) scale(1) rotate(0deg);
             }}
             {p_shattered:.2f}% {{
-              opacity: 0.85;
-              transform: translate({dx:.1f}px, {dy:.1f}px) scale(0.35) rotate({rot:.1f}deg);
-            }}
-            {p_reassemble_start:.2f}% {{
-              opacity: 0.85;
-              transform: translate({dx * 1.08:.1f}px, {dy * 1.08:.1f}px) scale(0.32) rotate({rot * 1.05:.1f}deg);
-            }}
-            {p_reassembled:.2f}% {{
-              opacity: 1;
-              transform: translate(0px, 0px) scale(1) rotate(0deg);
+              opacity: 0;
+              transform: translate({dx:.1f}px, {dy:.1f}px) scale(0.18) rotate({rot:.1f}deg);
             }}
             100% {{
-              opacity: 1;
-              transform: translate(0px, 0px) scale(1) rotate(0deg);
+              opacity: 0;
+              transform: scale(0.6);
             }}
           }}
           .tile-{tid} {{
             transform-origin: {t['cx']:.1f}px {t['cy']:.1f}px;
-            animation: kf_tile_{tid} 8s cubic-bezier(0.25, 0.9, 0.25, 1) infinite;
+            animation: kf_tile_{tid} 30s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
           }}
         ''')
     
@@ -323,13 +346,13 @@ def build_banner_svg(theme="dark"):
     svg.append(f'<clipPath id="portraitClip"><rect x="{cx_center - 185}" y="20" width="370" height="390" rx="14"/></clipPath>')
     svg.append('<g clip-path="url(#portraitClip)">')
     
-    # Render all small tile paths (Shatter into pieces and reassemble back together)
+    # Render all small tile paths (Pixel-by-pixel decode, 15s stable, and shatter into pieces)
     for t in tiles:
         tid = t['id']
         d_str = t['d']
         svg.append(f'<path fill="{portrait_col}" d="{d_str}" class="tile-{tid}" shape-rendering="crispEdges"/>')
     
-    # Scanning Cyber Laser Beam (Synchronized with 8s cycle)
+    # Scanning Cyber Laser Beam (Synchronized with 30s cycle)
     svg.append(f'''
       <rect x="{cx_center - 175}" y="0" width="350" height="28" fill="url(#scanGrad)" class="scanner-beam"/>
     ''')
@@ -338,14 +361,14 @@ def build_banner_svg(theme="dark"):
     svg.append('</svg>')
     return "\n".join(svg)
 
-print("Compiling dark and light 8-second shatter & reassemble SVGs...")
+print("Compiling dark and light decode, 15s stable & shatter SVGs...")
 dark_svg_code = build_banner_svg("dark")
 light_svg_code = build_banner_svg("light")
 
 # Validate XML syntax with ElementTree
 ET.fromstring(dark_svg_code)
 ET.fromstring(light_svg_code)
-print("XML validation PASSED for both 8s shatter & reassemble SVGs!")
+print("XML validation PASSED for both decode & shatter SVGs!")
 
 dark_path = os.path.join(output_dir, "dark.svg")
 light_path = os.path.join(output_dir, "light.svg")
