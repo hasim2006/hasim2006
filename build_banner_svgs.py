@@ -277,9 +277,26 @@ def build_banner_svg(theme="dark"):
     </g>
     ''')
     
-    # Clean open panel divider between Visual Map and System Info
-    svg.append(f'<line x1="424" y1="88" x2="424" y2="565" stroke="{border_col}" stroke-width="1" stroke-dasharray="3 5"/>')
-
+    # Left Panel Container Box (378 x 486)
+    svg.append(f'<rect x="34" y="88" width="378" height="486" rx="10" fill="{panel_bg}" stroke="{border_col}" stroke-width="1"/>')
+    # Corner brackets
+    svg.append(f'<path d="M 44 98 h 10 M 44 98 v 10 M 402 98 h -10 M 402 98 v 10 M 44 564 h 10 M 44 564 v -10 M 402 564 h -10 M 402 564 v -10" stroke="{chrome_col}55" stroke-width="1.5" fill="none"/>')
+    
+    # Inner clip-path to ensure portrait stays cleanly within borders
+    svg.append('<clipPath id="panelClip"><rect x="36" y="90" width="374" height="482" rx="8"/></clipPath>')
+    
+    svg.append('<g clip-path="url(#panelClip)">')
+    
+    # Subtle cybernetic background grid inside box
+    svg.append(f'''
+    <g stroke="{border_col}" stroke-width="0.5" stroke-dasharray="2 6" opacity="0.6">
+      <line x1="36" y1="210" x2="410" y2="210"/>
+      <line x1="36" y1="331" x2="410" y2="331"/>
+      <line x1="36" y1="452" x2="410" y2="452"/>
+      <line x1="160" y1="90" x2="160" y2="572"/>
+      <line x1="284" y1="90" x2="284" y2="572"/>
+    </g>
+    ''')
     
     # =========================================================================
     # LAYER 1: FULL USER PHOTO (Dithered with pure photographic completeness)
@@ -434,6 +451,8 @@ def build_banner_svg(theme="dark"):
           dur="5.4s" repeatCount="indefinite"/>''')
         svg.append('</circle>')
     svg.append('</g>') # End ambient-particles
+    
+    svg.append('</g>') # End clip-path group
     
     # Dynamic Footer for Left Panel at y=594
     svg.append(f'''
