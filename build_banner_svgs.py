@@ -83,41 +83,42 @@ def dither_dark_mode(gray_arr, mask_arr):
 
 def dither_light_mode(gray_arr, mask_arr):
     mat = gray_arr.copy()
-    mat[~mask_arr] = 255.0
-    mat = 255.0 - mat # Invert: dark parts high
-    mat[~mask_arr] = 0.0
+    mat_inv = 255.0 - mat
+    norm = np.clip(mat_inv / 255.0, 0, 1)
+    boosted = np.power(norm, 0.75) * 255.0
+    boosted[~mask_arr] = 0.0
     dots = np.zeros((h, w), dtype=bool)
     for y in range(h):
         xs = range(w) if y % 2 == 0 else range(w - 1, -1, -1)
         step = 1 if y % 2 == 0 else -1
         for x in xs:
             if not mask_arr[y, x]:
-                mat[y, x] = 0.0
+                boosted[y, x] = 0.0
                 continue
-            old_val = mat[y, x]
+            old_val = boosted[y, x]
             new_val = 255.0 if old_val >= 128.0 else 0.0
             dots[y, x] = (new_val == 255.0)
             err = old_val - new_val
             if step == 1:
                 if x + 1 < w and mask_arr[y, x + 1]:
-                    mat[y, x + 1] += err * (7.0 / 16.0)
+                    boosted[y, x + 1] += err * (7.0 / 16.0)
                 if y + 1 < h:
                     if x - 1 >= 0 and mask_arr[y + 1, x - 1]:
-                        mat[y + 1, x - 1] += err * (3.0 / 16.0)
+                        boosted[y + 1, x - 1] += err * (3.0 / 16.0)
                     if mask_arr[y + 1, x]:
-                        mat[y + 1, x] += err * (5.0 / 16.0)
+                        boosted[y + 1, x] += err * (5.0 / 16.0)
                     if x + 1 < w and mask_arr[y + 1, x + 1]:
-                        mat[y + 1, x + 1] += err * (1.0 / 16.0)
+                        boosted[y + 1, x + 1] += err * (1.0 / 16.0)
             else:
                 if x - 1 >= 0 and mask_arr[y, x - 1]:
-                    mat[y, x - 1] += err * (7.0 / 16.0)
+                    boosted[y, x - 1] += err * (7.0 / 16.0)
                 if y + 1 < h:
                     if x + 1 < w and mask_arr[y + 1, x + 1]:
-                        mat[y + 1, x + 1] += err * (3.0 / 16.0)
+                        boosted[y + 1, x + 1] += err * (3.0 / 16.0)
                     if mask_arr[y + 1, x]:
-                        mat[y + 1, x] += err * (5.0 / 16.0)
+                        boosted[y + 1, x] += err * (5.0 / 16.0)
                     if x - 1 >= 0 and mask_arr[y + 1, x - 1]:
-                        mat[y + 1, x - 1] += err * (1.0 / 16.0)
+                        boosted[y + 1, x - 1] += err * (1.0 / 16.0)
     return dots
 
 dots_dark = dither_dark_mode(arr_gray, mask)
