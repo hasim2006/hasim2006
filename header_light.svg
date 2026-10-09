@@ -32,6 +32,29 @@
 
       @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&amp;display=swap');
       text { font-family: 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, monospace; }
+      
+      /* Slow Transparent-to-Full-Loaded Fade In Animation */
+      @keyframes slowFadeLoad {
+        0% {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        25% {
+          opacity: 0.25;
+        }
+        55% {
+          opacity: 0.65;
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0px);
+        }
+      }
+      
+      .greeting-container {
+        animation: slowFadeLoad 2.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+      
       @keyframes wave-hand {
         0% { transform: rotate(0deg); }
         15% { transform: rotate(24deg); }
@@ -41,6 +64,7 @@
         75% { transform: rotate(12deg); }
         100% { transform: rotate(0deg); }
       }
+      
       .wave-hand {
         transform-origin: 182px 50px;
         animation: wave-hand 2.2s infinite ease-in-out;
@@ -49,6 +73,7 @@
 </style>
 </defs>
 <rect width="1180" height="90" fill="none"/>
+<g class="greeting-container">
 
     <g>
       <!-- Green CLI prompt symbol -->
@@ -80,4 +105,5 @@
     <!-- Subtle cyber accent line below greeting -->
     <line x1="24" y1="80" x2="1156" y2="80" stroke="url(#lineGrad)" stroke-width="1.5"/>
     
+</g>
 </svg>
