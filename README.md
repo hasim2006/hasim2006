@@ -38,9 +38,6 @@
 - 🎓 **Education:** Pursuing **B.Tech in Computer Science and Engineering** (CSE).
 - 🚀 **Focus:** Architecting and building high-performance **Full-Stack Web Applications** and **AI/Machine Learning Systems**.
 - 💡 **Core Interests:** Deep Learning, Neural Architectures, Large Language Models (LLMs), and Scalable Distributed Systems.
-- 🛠️ **Current Endeavors:** Developing intelligent conversational agents, predictive defense systems, and full-stack platforms.
-- ⚡ **Philosophy:** Continuous learning, writing clean maintainable code, and shipping products that make a real difference.
-- 🌐 **Location:** India (UTC +05:30)
 - 💬 **Ask me about:** Python, React, Next.js, FastAPI, Node.js, and Modern Architecture.
 
 <br/>
@@ -50,19 +47,29 @@
 
 <br/>
 
+## 📈 GitHub Contributions & Analytics
+
 <div align="center">
-  <!-- PHASE 3: GitHub Streak & Stats (Palette-Themed) -->
-  <img width="100%" src="https://streak-stats.demolab.com/?user=hasim2006&hide_border=true&background=0A101F&stroke=22D3EE&ring=A78BFA&fire=10B981&currStreakLabel=22D3EE&sideLabels=94A3B8&currStreakNum=F8FAFC&sideNums=F8FAFC&dates=64748B&titleColor=22D3EE&card_width=1180" alt="streak" />
+  <!-- PHASE 3: GitHub Streak & Stats (Palette-Themed, Linked to Profile) -->
+  <a href="https://github.com/hasim2006" target="_blank">
+    <img width="100%" src="https://streak-stats.demolab.com/?user=hasim2006&hide_border=true&background=0A101F&stroke=22D3EE&ring=A78BFA&fire=10B981&currStreakLabel=22D3EE&sideLabels=94A3B8&currStreakNum=F8FAFC&sideNums=F8FAFC&dates=64748B&titleColor=22D3EE&card_width=1180" alt="streak" />
+  </a>
   <br/><br/>
-  <img width="49%" src="https://github-readme-stats.vercel.app/api?username=hasim2006&show_icons=true&count_private=true&include_all_commits=true&hide_rank=true&hide_border=true&title_color=22D3EE&icon_color=A78BFA&text_color=94A3B8&bg_color=0A101F&card_width=500" alt="stats" />
-  <img width="49%" src="https://github-readme-stats.vercel.app/api/top-langs/?username=hasim2006&layout=compact&langs_count=8&hide_border=true&title_color=22D3EE&text_color=94A3B8&bg_color=0A101F&card_width=500" alt="top langs" />
+  <a href="https://github.com/hasim2006" target="_blank">
+    <img width="49%" src="https://github-readme-stats.vercel.app/api?username=hasim2006&show_icons=true&count_private=true&include_all_commits=true&hide_rank=true&hide_border=true&title_color=22D3EE&icon_color=A78BFA&text_color=94A3B8&bg_color=0A101F&card_width=500" alt="stats" />
+  </a>
+  <a href="https://github.com/hasim2006" target="_blank">
+    <img width="49%" src="https://github-readme-stats.vercel.app/api/top-langs/?username=hasim2006&layout=compact&langs_count=8&hide_border=true&title_color=22D3EE&text_color=94A3B8&bg_color=0A101F&card_width=500" alt="top langs" />
+  </a>
 
   <br/><br/>
 
-  <!-- PHASE 4: Contribution Snake Animation -->
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/hasim2006/hasim2006/output/github-snake-dark.svg" />
-    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/hasim2006/hasim2006/output/github-snake.svg" />
-    <img alt="Snake eating my contributions" src="https://raw.githubusercontent.com/hasim2006/hasim2006/output/github-snake-dark.svg" width="100%" />
-  </picture>
+  <!-- PHASE 4: Contribution Snake Animation (Auto-updated from live contributions) -->
+  <a href="https://github.com/hasim2006" target="_blank">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/hasim2006/hasim2006/output/github-snake-dark.svg" />
+      <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/hasim2006/hasim2006/output/github-snake.svg" />
+      <img alt="Snake eating my contributions" src="https://raw.githubusercontent.com/hasim2006/hasim2006/output/github-snake-dark.svg" width="100%" />
+    </picture>
+  </a>
 </div>
