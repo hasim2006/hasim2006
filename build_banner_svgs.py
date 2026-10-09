@@ -303,6 +303,7 @@ def build_svg(theme="dark"):
       .leader {{ stroke: {leader_col}; stroke-dasharray: 2 4; stroke-width: 1.2; }}
       .accent {{ fill: {accent_col}; }}
     ''')
+    svg.append('</style>')
     svg.append('</defs>')
     
     # Terminal Window Background
@@ -416,7 +417,7 @@ def build_svg(theme="dark"):
     
     rows = [
         ("Subject", "Mohammad Hasim", 140, text_val),
-        ("Role", "Full-Stack Developer & IoT", 235, chrome_col),
+        ("Role", "Full-Stack Developer &amp; IoT", 235, chrome_col),
         ("Origin", "India", 50, text_val),
         ("Education", "B.Tech CSE (IoT)", 150, text_val),
         ("Status", "Building + Learning + Shipping", 260, accent_col),

@@ -19,6 +19,7 @@
       .leader { stroke: #334155; stroke-dasharray: 2 4; stroke-width: 1.2; }
       .accent { fill: #10B981; }
     
+</style>
 </defs>
 <rect width="1180" height="610" rx="14" fill="#0A101F" stroke="#1E293B" stroke-width="1.5"/>
 <line x1="0" y1="44" x2="1180" y2="44" stroke="#1E293B" stroke-width="1"/>
@@ -13592,7 +13593,7 @@
 <text x="1144" y="112" text-anchor="end" textLength="140" lengthAdjust="spacingAndGlyphs" fill="#F8FAFC" font-size="14" font-weight="600">Mohammad Hasim</text>
 <text x="442" y="137" class="row-lbl">Role</text>
 <line x1="489" y1="133" x2="895" y2="133" class="leader"/>
-<text x="1144" y="137" text-anchor="end" textLength="235" lengthAdjust="spacingAndGlyphs" fill="#22D3EE" font-size="14" font-weight="600">Full-Stack Developer & IoT</text>
+<text x="1144" y="137" text-anchor="end" textLength="235" lengthAdjust="spacingAndGlyphs" fill="#22D3EE" font-size="14" font-weight="600">Full-Stack Developer &amp; IoT</text>
 <text x="442" y="162" class="row-lbl">Origin</text>
 <line x1="506" y1="158" x2="1080" y2="158" class="leader"/>
 <text x="1144" y="162" text-anchor="end" textLength="50" lengthAdjust="spacingAndGlyphs" fill="#F8FAFC" font-size="14" font-weight="600">India</text>
