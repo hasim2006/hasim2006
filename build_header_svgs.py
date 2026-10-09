@@ -10,7 +10,7 @@ def build_header_svg(theme="dark"):
     chrome_col = "#22D3EE" if is_dark else "#0891B2"
     
     svg = []
-    svg.append('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 124" width="100%" height="100%">')
+    svg.append('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 86" width="100%" height="100%">')
     svg.append('<defs>')
     svg.append('''
       <!-- Dynamic Transition Gradient for Name: Cycles smoothly between Cyan, Violet, Emerald, Gold -->
@@ -32,12 +32,12 @@ def build_header_svg(theme="dark"):
         </stop>
       </linearGradient>
 
-      <!-- Full-width edge-to-edge subtle line gradient -->
+      <!-- Full-width edge-to-edge subtle line gradient touching container borders -->
       <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
         <stop offset="0%" stop-color="#22D3EE" stop-opacity="0.9"/>
-        <stop offset="25%" stop-color="#22D3EE" stop-opacity="0.6"/>
-        <stop offset="50%" stop-color="#A78BFA" stop-opacity="0.6"/>
-        <stop offset="75%" stop-color="#10B981" stop-opacity="0.6"/>
+        <stop offset="25%" stop-color="#22D3EE" stop-opacity="0.5"/>
+        <stop offset="50%" stop-color="#A78BFA" stop-opacity="0.5"/>
+        <stop offset="75%" stop-color="#10B981" stop-opacity="0.5"/>
         <stop offset="100%" stop-color="#10B981" stop-opacity="0.9"/>
       </linearGradient>
     ''')
@@ -47,11 +47,11 @@ def build_header_svg(theme="dark"):
       @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&amp;display=swap');
       text {{ font-family: 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, monospace; }}
       
-      /* Sequential Loading: Step 1 - Hi there loads first */
+      /* Phase 1: Hi there appears immediately */
       @keyframes loadHiThere {{
         0% {{
           opacity: 0;
-          transform: translateY(12px);
+          transform: translateY(10px);
         }}
         100% {{
           opacity: 1;
@@ -59,28 +59,30 @@ def build_header_svg(theme="dark"):
         }}
       }}
       
-      /* Sequential Loading: Step 2 - I'm Mohammad Hasim loads second */
-      @keyframes loadName {{
+      /* Phase 2: Rest of the line (I'm Mohammad Hasim) appears on the SAME line after 4.0 seconds */
+      @keyframes loadSameLineAfter4s {{
         0% {{
           opacity: 0;
-          transform: translateY(14px);
+          transform: translateX(-12px);
         }}
         100% {{
           opacity: 1;
-          transform: translateY(0px);
+          transform: translateX(0px);
         }}
       }}
       
-      .line-hi-there {{
+      .greeting-first {{
         animation: loadHiThere 1.0s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
       }}
       
-      .line-name {{
-        animation: loadName 1.2s cubic-bezier(0.16, 1, 0.3, 1) 1.2s both;
+      .name-after-4s {{
+        opacity: 0;
+        animation: loadSameLineAfter4s 1.2s cubic-bezier(0.16, 1, 0.3, 1) 4.0s forwards;
       }}
       
-      .badge-tag {{
-        animation: loadHiThere 1.0s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+      .badge-after-4s {{
+        opacity: 0;
+        animation: loadSameLineAfter4s 1.2s cubic-bezier(0.16, 1, 0.3, 1) 4.0s forwards;
       }}
       
       @keyframes wave-hand {{
@@ -94,7 +96,7 @@ def build_header_svg(theme="dark"):
       }}
       
       .wave-hand {{
-        transform-origin: 196px 42px;
+        transform-origin: 184px 48px;
         animation: wave-hand 2.2s infinite ease-in-out;
       }}
     ''')
@@ -102,48 +104,50 @@ def build_header_svg(theme="dark"):
     svg.append('</defs>')
     
     # Transparent background (merges seamlessly into page outside the box)
-    svg.append('<rect width="1180" height="124" fill="none"/>')
+    svg.append('<rect width="1180" height="86" fill="none"/>')
     
-    # ----------------------------------------------------
-    # LINE 1: "Hi there 👋" + Top Right Badge (Loads First)
-    # ----------------------------------------------------
-    svg.append('<g class="line-hi-there">')
+    # =========================================================================
+    # SINGLE HORIZONTAL LINE:
+    # 1. First (0s): "Hi there 👋" appears immediately
+    # 2. Second (4s later): "I'm Mohammad Hasim" appears on the SAME LINE
+    # =========================================================================
+    
+    # Part 1: "Hi there 👋" (Appears First)
+    svg.append('<g class="greeting-first">')
     svg.append(f'''
       <!-- Green CLI prompt symbol -->
-      <text x="24" y="44" font-size="28" font-weight="700" fill="#10B981">&gt;</text>
+      <text x="24" y="48" font-size="28" font-weight="700" fill="#10B981">&gt;</text>
       <!-- Greeting text -->
-      <text x="52" y="44" font-size="28" font-weight="700" fill="{text_val}">Hi there </text>
+      <text x="50" y="48" font-size="26" font-weight="700" fill="{text_val}">Hi there </text>
       <!-- Animated Waving Hand Emoji -->
-      <text x="196" y="44" font-size="28" class="wave-hand">👋</text>
+      <text x="184" y="48" font-size="28" class="wave-hand">👋</text>
     ''')
     svg.append('</g>')
     
-    # Top Right Status Badge (Matches right side border alignment)
+    # Part 2: "I'm Mohammad Hasim" (Appears on the SAME line after 4 seconds)
+    svg.append('<g class="name-after-4s">')
     svg.append(f'''
-    <g class="badge-tag">
-      <rect x="888" y="20" width="268" height="34" rx="8" fill="{chrome_col}18" stroke="{chrome_col}55" stroke-width="1.2"/>
-      <circle cx="908" cy="37" r="4.5" fill="#10B981">
-        <animate attributeName="opacity" values="1; 0.3; 1" dur="2s" repeatCount="indefinite"/>
-      </circle>
-      <text x="924" y="42" fill="{chrome_col}" font-size="12.5" font-weight="700" letter-spacing="1.2">FULL-STACK &amp; AI DEVELOPER</text>
-    </g>
-    ''')
-    
-    # ----------------------------------------------------
-    # LINE 2: "I'm Mohammad Hasim" (Loads Second, Separate Line)
-    # ----------------------------------------------------
-    svg.append('<g class="line-name">')
-    svg.append(f'''
-      <text x="52" y="92" font-size="26" font-weight="600" fill="{text_muted}">I&apos;m </text>
-      <text x="116" y="92" font-size="34" font-weight="800" fill="url(#nameGrad)" letter-spacing="0.5">
+      <text x="228" y="48" font-size="26" font-weight="500" fill="{text_muted}"> I&apos;m </text>
+      <text x="294" y="48" font-size="28" font-weight="800" fill="url(#nameGrad)" letter-spacing="0.5">
         Mohammad Hasim
         <animate attributeName="opacity" values="0.88; 1; 0.88" dur="2.5s" repeatCount="indefinite"/>
       </text>
     ''')
     svg.append('</g>')
     
+    # Top Right Status Badge (Also reveals alongside name after 4s)
+    svg.append(f'''
+    <g class="badge-after-4s">
+      <rect x="888" y="24" width="268" height="34" rx="8" fill="{chrome_col}18" stroke="{chrome_col}55" stroke-width="1.2"/>
+      <circle cx="908" cy="41" r="4.5" fill="#10B981">
+        <animate attributeName="opacity" values="1; 0.3; 1" dur="2s" repeatCount="indefinite"/>
+      </circle>
+      <text x="924" y="46" fill="{chrome_col}" font-size="12.5" font-weight="700" letter-spacing="1.2">FULL-STACK &amp; AI DEVELOPER</text>
+    </g>
+    ''')
+    
     # Bottom full-width border line (Touches and matches left and right side borders)
-    svg.append(f'<line x1="0" y1="120" x2="1180" y2="120" stroke="url(#lineGrad)" stroke-width="1.5"/>')
+    svg.append(f'<line x1="0" y1="78" x2="1180" y2="78" stroke="url(#lineGrad)" stroke-width="1.5"/>')
     
     svg.append('</svg>')
     return "\n".join(svg)
@@ -156,4 +160,4 @@ with open(os.path.join(output_dir, "header_dark.svg"), "w", encoding="utf-8") as
 with open(os.path.join(output_dir, "header_light.svg"), "w", encoding="utf-8") as f:
     f.write(header_light)
 
-print("header_dark.svg and header_light.svg generated with separated lines and sequential loading animation!")
+print("header_dark.svg and header_light.svg generated: same line, Hi there first, and I'm Mohammad Hasim after 4 seconds!")

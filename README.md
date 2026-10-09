@@ -1,9 +1,9 @@
 <div align="center">
-  <!-- PHASE 0: Hero Greeting Header (Separate lines with sequential fade-in load animation) -->
+  <!-- PHASE 0: Hero Greeting Header (Same line: Hi there first, then I'm Mohammad Hasim after 4s) -->
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/hasim2006/hasim2006/main/header_dark.svg?v=4">
-    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/hasim2006/hasim2006/main/header_light.svg?v=4">
-    <img alt="Hi there 👋 I'm Mohammad Hasim" src="https://raw.githubusercontent.com/hasim2006/hasim2006/main/header_dark.svg?v=4" width="100%">
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/hasim2006/hasim2006/main/header_dark.svg?v=5">
+    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/hasim2006/hasim2006/main/header_light.svg?v=5">
+    <img alt="Hi there 👋 I'm Mohammad Hasim" src="https://raw.githubusercontent.com/hasim2006/hasim2006/main/header_dark.svg?v=5" width="100%">
   </picture>
 
   <br/>
