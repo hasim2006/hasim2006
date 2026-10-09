@@ -40,11 +40,124 @@
 
   <br/><br/>
 
-  <!-- PHASE 5: Contribution Reservoir (Water Glass with Dropping Commits) -->
+  <!-- PHASE 5: Continuous Engineering Infinity Loop -->
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/hasim2006/hasim2006/main/contribution_glass_dark.svg" />
-    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/hasim2006/hasim2006/main/contribution_glass_light.svg" />
-    <img alt="Contribution Water Reservoir" src="https://raw.githubusercontent.com/hasim2006/hasim2006/main/contribution_glass_dark.svg" width="100%" />
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/hasim2006/hasim2006/main/infinity_loop_dark.svg" />
+    <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/hasim2006/hasim2006/main/infinity_loop_light.svg" />
+    <img alt="Continuous Engineering Infinity Loop" src="https://raw.githubusercontent.com/hasim2006/hasim2006/main/infinity_loop_dark.svg" width="100%" />
   </picture>
+
+  <br/><br/>
+
+  <!-- PHASE 6: Featured Projects Showcase -->
+  <div align="left">
+    <h2>🚀 Featured Engineering &amp; AI Projects</h2>
+    <p><i>Click on any project image or title to launch the live application or repository:</i></p>
+  </div>
+
+  <table width="100%">
+    <tr>
+      <td width="50%" align="center" valign="top">
+        <a href="https://portfolio-website-main-livid-theta.vercel.app/" target="_blank">
+          <img src="https://raw.githubusercontent.com/hasim2006/Portfolio/main/public/images/drishti.png" width="100%" alt="Drishti AI" style="border-radius: 8px;" />
+        </a>
+        <br/><br/>
+        <a href="https://portfolio-website-main-livid-theta.vercel.app/" target="_blank">
+          <b>🤖 Drishti — Advanced Multilingual LLM Chatbot</b>
+        </a>
+        <br/>
+        <sub>An intelligent AI conversational agent powered by custom Large Language Models. Features contextual dialogue, deep reasoning, and multilingual support including Hindi.</sub>
+        <br/><br/>
+        <img src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white" />
+        <img src="https://img.shields.io/badge/PyTorch-EE4C2C?style=flat-square&logo=pytorch&logoColor=white" />
+        <img src="https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white" />
+        <img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=black" />
+      </td>
+      <td width="50%" align="center" valign="top">
+        <a href="https://github.com/hasim2006/PhantomGrid-Predictive-Defense-SIH26153" target="_blank">
+          <img src="https://raw.githubusercontent.com/hasim2006/Portfolio/main/public/images/project-1.webp" width="100%" alt="PhantomGrid" style="border-radius: 8px;" />
+        </a>
+        <br/><br/>
+        <a href="https://github.com/hasim2006/PhantomGrid-Predictive-Defense-SIH26153" target="_blank">
+          <b>🛡️ PhantomGrid — Predictive Cyber Defense System</b>
+        </a>
+        <br/>
+        <sub>World Model-driven predictive cyber defense system forecasting network state transitions and MITRE ATT&amp;CK progression before compromise completion (NTRO SIH).</sub>
+        <br/><br/>
+        <img src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white" />
+        <img src="https://img.shields.io/badge/World_Models-10B981?style=flat-square&logo=openai&logoColor=white" />
+        <img src="https://img.shields.io/badge/CyberSec-22D3EE?style=flat-square&logo=kalilinux&logoColor=white" />
+        <img src="https://img.shields.io/badge/MITRE_ATT%26CK-EF4444?style=flat-square" />
+      </td>
+    </tr>
+    <tr>
+      <td width="50%" align="center" valign="top">
+        <a href="https://portfolio-website-main-livid-theta.vercel.app/" target="_blank">
+          <img src="https://raw.githubusercontent.com/hasim2006/Portfolio/main/public/images/votechain.png" width="100%" alt="VoteChain" style="border-radius: 8px;" />
+        </a>
+        <br/><br/>
+        <a href="https://portfolio-website-main-livid-theta.vercel.app/" target="_blank">
+          <b>⛓️ VoteChain — Decentralized Blockchain Voting</b>
+        </a>
+        <br/>
+        <sub>Tamper-proof, transparent election system powered by Ethereum smart contracts, IPFS distributed storage, and MetaMask integration for verifiable voting integrity.</sub>
+        <br/><br/>
+        <img src="https://img.shields.io/badge/Solidity-363636?style=flat-square&logo=solidity&logoColor=white" />
+        <img src="https://img.shields.io/badge/Ethereum-3C3C3D?style=flat-square&logo=ethereum&logoColor=white" />
+        <img src="https://img.shields.io/badge/Web3.js-F16822?style=flat-square&logo=web3dotjs&logoColor=white" />
+        <img src="https://img.shields.io/badge/IPFS-65C2CB?style=flat-square&logo=ipfs&logoColor=white" />
+      </td>
+      <td width="50%" align="center" valign="top">
+        <a href="https://portfolio-website-main-livid-theta.vercel.app/" target="_blank">
+          <img src="https://raw.githubusercontent.com/hasim2006/Portfolio/main/public/images/gamekroy.png" width="100%" alt="GameKroy" style="border-radius: 8px;" />
+        </a>
+        <br/><br/>
+        <a href="https://portfolio-website-main-livid-theta.vercel.app/" target="_blank">
+          <b>🎮 GameKroy — Gaming Gear E-Commerce Platform</b>
+        </a>
+        <br/>
+        <sub>Full-stack commercial storefront featuring user authentication, product catalog, cart state management, live Stripe payment gateway, and order fulfillment.</sub>
+        <br/><br/>
+        <img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=black" />
+        <img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white" />
+        <img src="https://img.shields.io/badge/MongoDB-47A248?style=flat-square&logo=mongodb&logoColor=white" />
+        <img src="https://img.shields.io/badge/Stripe-635BFF?style=flat-square&logo=stripe&logoColor=white" />
+      </td>
+    </tr>
+    <tr>
+      <td width="50%" align="center" valign="top">
+        <a href="https://portfolio-website-main-livid-theta.vercel.app/" target="_blank">
+          <img src="https://raw.githubusercontent.com/hasim2006/Portfolio/main/public/images/redxchess.png" width="100%" alt="RedxChess" style="border-radius: 8px;" />
+        </a>
+        <br/><br/>
+        <a href="https://portfolio-website-main-livid-theta.vercel.app/" target="_blank">
+          <b>♟️ RedxChess — Neural Chess Engine (3640 ELO)</b>
+        </a>
+        <br/>
+        <sub>High-performance chess engine powered by neural network position evaluation, bitboard bitwise representations, and UCI protocol move search.</sub>
+        <br/><br/>
+        <img src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white" />
+        <img src="https://img.shields.io/badge/C++-00599C?style=flat-square&logo=cplusplus&logoColor=white" />
+        <img src="https://img.shields.io/badge/Neural_Net-8B5CF6?style=flat-square" />
+        <img src="https://img.shields.io/badge/UCI_Protocol-F59E0B?style=flat-square" />
+      </td>
+      <td width="50%" align="center" valign="top">
+        <a href="https://github.com/hasim2006/Stereogram-Hidden-Font" target="_blank">
+          <img src="https://raw.githubusercontent.com/hasim2006/Portfolio/main/public/images/project-2.webp" width="100%" alt="Stereogram Hidden Font" style="border-radius: 8px;" />
+        </a>
+        <br/><br/>
+        <a href="https://github.com/hasim2006/Stereogram-Hidden-Font" target="_blank">
+          <b>👁️ Stereogram-Hidden-Font — 3D Optical Engine</b>
+        </a>
+        <br/>
+        <sub>A browser-based autostereogram generator converting text and graphics into hidden 3D depth maps and optical illusions via canvas shaders.</sub>
+        <br/><br/>
+        <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white" />
+        <img src="https://img.shields.io/badge/Canvas_API-E34F26?style=flat-square&logo=html5&logoColor=white" />
+        <img src="https://img.shields.io/badge/3D_Depth-10B981?style=flat-square" />
+        <img src="https://img.shields.io/badge/Vite-646CFF?style=flat-square&logo=vite&logoColor=white" />
+      </td>
+    </tr>
+  </table>
 
 </div>
