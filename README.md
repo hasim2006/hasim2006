@@ -47,6 +47,68 @@
 
 <br/>
 
+
+<br/>
+
+## 🌟 Featured Flagship Projects
+
+<table>
+  <tr>
+    <td width="50%" valign="top">
+      <h3>🛡️ <a href="https://github.com/hasim2006/PhantomGrid-Predictive-Defense-SIH26153">PhantomGrid Predictive Defense</a></h3>
+      <p>World Model-driven predictive cyber defense system forecasting network state transitions and MITRE ATT&CK progression before compromise completion. <em>(Smart India Hackathon ID: 26153)</em></p>
+      <p>
+        <img src="https://img.shields.io/badge/Domain-Cybersecurity-red?style=flat-square" />
+        <img src="https://img.shields.io/badge/Stack-Python%20%7C%20FastAPI%20%7C%20Docker-blue?style=flat-square" />
+      </p>
+    </td>
+    <td width="50%" valign="top">
+      <h3>🫁 <a href="https://github.com/hasim2006/PulmoGuard">PulmoGuard Medical Diagnostics</a></h3>
+      <p>High-precision deep learning diagnostic assistant analyzing multi-class chest radiographs and pulmonary pathologies with automated clinical reporting.</p>
+      <p>
+        <img src="https://img.shields.io/badge/Domain-Healthcare%20AI-success?style=flat-square" />
+        <img src="https://img.shields.io/badge/Stack-PyTorch%20%7C%20OpenCV%20%7C%20CI-blue?style=flat-square" />
+      </p>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <h3>🔐 <a href="https://github.com/hasim2006/torus-verifier-backend">TORUS Verifier Service (v2)</a></h3>
+      <p>Scalable cyclic projection authentication system engineered with elliptic curve cryptography (tinyec), async SQLAlchemy, and Redis replay-attack caching.</p>
+      <p>
+        <img src="https://img.shields.io/badge/Domain-Cryptography-orange?style=flat-square" />
+        <img src="https://img.shields.io/badge/Stack-FastAPI%20%7C%20Redis%20%7C%20Docker-blue?style=flat-square" />
+      </p>
+    </td>
+    <td width="50%" valign="top">
+      <h3>🕹️ <a href="https://github.com/hasim2006/mini-game">Mini Game Arcade</a></h3>
+      <p>Zero-dependency, high-FPS HTML5 Canvas browser arcade featuring Fruit Blade spline physics, Cyber Memory Matrix, and procedural Web Audio synthesizers.</p>
+      <p>
+        <a href="https://mini-game-arcade-tan.vercel.app"><img src="https://img.shields.io/badge/Live%20Demo-Vercel-6366F1?style=flat-square" /></a>
+        <img src="https://img.shields.io/badge/Stack-HTML5%20Canvas%20%7C%20Web%20Audio-yellow?style=flat-square" />
+      </p>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <h3>🚀 <a href="https://github.com/hasim2006/startup-validator">Startup Validator</a></h3>
+      <p>Full-stack crowd-validation platform for discovering, evaluating, and scoring startup concepts with multi-attribute filtering and community upvoting.</p>
+      <p>
+        <a href="https://startup-validator.vercel.app"><img src="https://img.shields.io/badge/Live%20Demo-Vercel-6366F1?style=flat-square" /></a>
+        <img src="https://img.shields.io/badge/Stack-Next.js%2014%20%7C%20Prisma%20%7C%20TypeScript-blue?style=flat-square" />
+      </p>
+    </td>
+    <td width="50%" valign="top">
+      <h3>💼 <a href="https://github.com/hasim2006/Portfolio">Developer Portfolio & Showcase</a></h3>
+      <p>Personal interactive portfolio showcasing architecture breakdowns, modern animations, telemetry stats, and full-stack projects.</p>
+      <p>
+        <a href="https://portfolio-website-main-livid-theta.vercel.app/"><img src="https://img.shields.io/badge/Live%20Demo-Vercel-6366F1?style=flat-square" /></a>
+        <img src="https://img.shields.io/badge/Stack-Vite%20%7C%20TypeScript%20%7C%20Tailwind-blue?style=flat-square" />
+      </p>
+    </td>
+  </tr>
+</table>
+
 ## 📈 GitHub Contributions & Analytics
 
 <div align="center">
