@@ -3,7 +3,7 @@
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/hasim2006/hasim2006/main/header_dark.svg?v=20261010_01">
     <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/hasim2006/hasim2006/main/header_light.svg?v=20261010_01">
-    <img alt="Hi there 👋 I'm Mohammad Hasim" src="https://raw.githubusercontent.com/hasim2006/hasim2006/main/header_dark.svg?v=20261010_01" width="100%">
+    <img alt="Hi there  I'm Mohammad Hasim" src="https://raw.githubusercontent.com/hasim2006/hasim2006/main/header_dark.svg?v=20261010_01" width="100%">
   </picture>
 
   <br/>
@@ -33,12 +33,12 @@
 
 <br/>
 
-## 👨‍💻 About Me
+## ‍ About Me
 
-- 🎓 **Education:** Pursuing **B.Tech in Computer Science and Engineering** (CSE).
-- 🚀 **Focus:** Architecting and building high-performance **Full-Stack Web Applications** and **AI/Machine Learning Systems**.
-- 💡 **Core Interests:** Deep Learning, Neural Architectures, Large Language Models (LLMs), and Scalable Distributed Systems.
-- 💬 **Ask me about:** Python, React, Next.js, FastAPI, Node.js, and Modern Architecture.
+- **Education:** Pursuing **B.Tech in Computer Science and Engineering** (CSE).
+- **Focus:** Architecting and building high-performance **Full-Stack Web Applications** and **AI/Machine Learning Systems**.
+- **Core Interests:** Deep Learning, Neural Architectures, Large Language Models (LLMs), and Scalable Distributed Systems.
+- **Ask me about:** Python, React, Next.js, FastAPI, Node.js, and Modern Architecture.
 
 <br/>
 
@@ -50,12 +50,12 @@
 
 <br/>
 
-## 🌟 Featured Flagship Projects
+## Featured Flagship Projects
 
 <table>
   <tr>
     <td width="50%" valign="top">
-      <h3>🛡️ <a href="https://github.com/hasim2006/PhantomGrid-Predictive-Defense-SIH26153">PhantomGrid Predictive Defense</a></h3>
+      <h3>️ <a href="https://github.com/hasim2006/PhantomGrid-Predictive-Defense-SIH26153">PhantomGrid Predictive Defense</a></h3>
       <p>World Model-driven predictive cyber defense system forecasting network state transitions and MITRE ATT&CK progression before compromise completion. <em>(Smart India Hackathon ID: 26153)</em></p>
       <p>
         <img src="https://img.shields.io/badge/Domain-Cybersecurity-red?style=flat-square" />
@@ -63,7 +63,7 @@
       </p>
     </td>
     <td width="50%" valign="top">
-      <h3>🫁 <a href="https://github.com/hasim2006/PulmoGuard">PulmoGuard Medical Diagnostics</a></h3>
+      <h3> <a href="https://github.com/hasim2006/PulmoGuard">PulmoGuard Medical Diagnostics</a></h3>
       <p>High-precision deep learning diagnostic assistant analyzing multi-class chest radiographs and pulmonary pathologies with automated clinical reporting.</p>
       <p>
         <img src="https://img.shields.io/badge/Domain-Healthcare%20AI-success?style=flat-square" />
@@ -73,7 +73,7 @@
   </tr>
   <tr>
     <td width="50%" valign="top">
-      <h3>🔐 <a href="https://github.com/hasim2006/torus-verifier-backend">TORUS Verifier Service (v2)</a></h3>
+      <h3> <a href="https://github.com/hasim2006/torus-verifier-backend">TORUS Verifier Service (v2)</a></h3>
       <p>Scalable cyclic projection authentication system engineered with elliptic curve cryptography (tinyec), async SQLAlchemy, and Redis replay-attack caching.</p>
       <p>
         <img src="https://img.shields.io/badge/Domain-Cryptography-orange?style=flat-square" />
@@ -81,7 +81,7 @@
       </p>
     </td>
     <td width="50%" valign="top">
-      <h3>🕹️ <a href="https://github.com/hasim2006/mini-game">Mini Game Arcade</a></h3>
+      <h3>️ <a href="https://github.com/hasim2006/mini-game">Mini Game Arcade</a></h3>
       <p>Zero-dependency, high-FPS HTML5 Canvas browser arcade featuring Fruit Blade spline physics, Cyber Memory Matrix, and procedural Web Audio synthesizers.</p>
       <p>
         <a href="https://mini-game-arcade-tan.vercel.app"><img src="https://img.shields.io/badge/Live%20Demo-Vercel-6366F1?style=flat-square" /></a>
@@ -91,7 +91,7 @@
   </tr>
   <tr>
     <td width="50%" valign="top">
-      <h3>🚀 <a href="https://github.com/hasim2006/startup-validator">Startup Validator</a></h3>
+      <h3> <a href="https://github.com/hasim2006/startup-validator">Startup Validator</a></h3>
       <p>Full-stack crowd-validation platform for discovering, evaluating, and scoring startup concepts with multi-attribute filtering and community upvoting.</p>
       <p>
         <a href="https://startup-validator.vercel.app"><img src="https://img.shields.io/badge/Live%20Demo-Vercel-6366F1?style=flat-square" /></a>
@@ -99,7 +99,7 @@
       </p>
     </td>
     <td width="50%" valign="top">
-      <h3>💼 <a href="https://github.com/hasim2006/Portfolio">Developer Portfolio & Showcase</a></h3>
+      <h3> <a href="https://github.com/hasim2006/Portfolio">Developer Portfolio & Showcase</a></h3>
       <p>Personal interactive portfolio showcasing architecture breakdowns, modern animations, telemetry stats, and full-stack projects.</p>
       <p>
         <a href="https://portfolio-website-main-livid-theta.vercel.app/"><img src="https://img.shields.io/badge/Live%20Demo-Vercel-6366F1?style=flat-square" /></a>
@@ -109,7 +109,7 @@
   </tr>
 </table>
 
-## 📈 GitHub Contributions & Analytics
+## GitHub Contributions & Analytics
 
 <div align="center">
   <!-- PHASE 3: GitHub Streak & Stats (Palette-Themed, Linked to Profile) -->
