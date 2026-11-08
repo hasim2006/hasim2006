@@ -1,4 +1,4 @@
-<div align="center">
+﻿<div align="center">
   <!-- PHASE 0: Hero Greeting Header (Same line: Hi there first, then I'm Mohammad Hasim after 4s) -->
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/hasim2006/hasim2006/main/header_dark.svg?v=20261010_01">
@@ -55,25 +55,43 @@
 <table>
   <tr>
     <td width="50%" valign="top">
-      <h3>️ <a href="https://github.com/hasim2006/PhantomGrid-Predictive-Defense-SIH26153">PhantomGrid Predictive Defense</a></h3>
-      <p>World Model-driven predictive cyber defense system forecasting network state transitions and MITRE ATT&CK progression before compromise completion. <em>(Smart India Hackathon ID: 26153)</em></p>
+      <h3>🤖 <a href="https://github.com/hasim2006/autocoder-MCP">AutoCoder-MCP</a></h3>
+      <p>Autonomous sandboxed coding agent with Model Context Protocol (MCP JSON-RPC 2.0), Docker isolation, traceback-driven self-healing test loops, and live SSE telemetry.</p>
       <p>
-        <img src="https://img.shields.io/badge/Domain-Cybersecurity-red?style=flat-square" />
-        <img src="https://img.shields.io/badge/Stack-Python%20%7C%20FastAPI%20%7C%20Docker-blue?style=flat-square" />
+        <img src="https://img.shields.io/badge/Domain-Agentic%20AI-blueviolet?style=flat-square" />
+        <img src="https://img.shields.io/badge/Stack-Python%20%7C%20Docker%20%7C%20MCP%20%7C%20FastAPI-blue?style=flat-square" />
       </p>
     </td>
     <td width="50%" valign="top">
-      <h3> <a href="https://github.com/hasim2006/PulmoGuard">PulmoGuard Medical Diagnostics</a></h3>
-      <p>High-precision deep learning diagnostic assistant analyzing multi-class chest radiographs and pulmonary pathologies with automated clinical reporting.</p>
+      <h3>⚡ <a href="https://github.com/hasim2006/pyredis">PyRedis Engine</a></h3>
+      <p>Zero-dependency in-memory key-value cache engine from scratch with raw TCP sockets, RESP protocol parser, O(1) LRU eviction, and AOF persistence (4,500+ ops/sec).</p>
       <p>
-        <img src="https://img.shields.io/badge/Domain-Healthcare%20AI-success?style=flat-square" />
-        <img src="https://img.shields.io/badge/Stack-PyTorch%20%7C%20OpenCV%20%7C%20CI-blue?style=flat-square" />
+        <img src="https://img.shields.io/badge/Domain-Systems%20Programming-blue?style=flat-square" />
+        <img src="https://img.shields.io/badge/Stack-Python%20%7C%20Asyncio%20%7C%20Raw%20TCP-blue?style=flat-square" />
       </p>
     </td>
   </tr>
   <tr>
     <td width="50%" valign="top">
-      <h3> <a href="https://github.com/hasim2006/torus-verifier-backend">TORUS Verifier Service (v2)</a></h3>
+      <h3>🛡️ <a href="https://github.com/hasim2006/PhantomGrid-Predictive-Defense-SIH26153">PhantomGrid Predictive Defense</a></h3>
+      <p>World Model-driven predictive cyber defense system forecasting network state transitions and MITRE ATT&CK progression before compromise completion. <em>(Smart India Hackathon ID: 26153)</em></p>
+      <p>
+        <img src="https://img.shields.io/badge/Domain-Cybersecurity-red?style=flat-square" />
+        <img src="https://img.shields.io/badge/Stack-Python%20%7C%20World%20Models%20%7C%20Docker-blue?style=flat-square" />
+      </p>
+    </td>
+    <td width="50%" valign="top">
+      <h3>🫁 <a href="https://github.com/hasim2006/PulmoGuard">PulmoGuard Medical Diagnostics</a></h3>
+      <p>Edge-native deep learning platform for pediatric & adult pneumonia triage. Powered by PyTorch ResNet-18, 98.97% sensitivity, real-time Grad-CAM explainability, and 100% air-gapped execution.</p>
+      <p>
+        <img src="https://img.shields.io/badge/Domain-Healthcare%20AI-success?style=flat-square" />
+        <img src="https://img.shields.io/badge/Stack-PyTorch%20%7C%20OpenCV%20%7C%20Grad--CAM-blue?style=flat-square" />
+      </p>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <h3>🔐 <a href="https://github.com/hasim2006/torus-verifier-backend">TORUS Verifier Service (v2)</a></h3>
       <p>Scalable cyclic projection authentication system engineered with elliptic curve cryptography (tinyec), async SQLAlchemy, and Redis replay-attack caching.</p>
       <p>
         <img src="https://img.shields.io/badge/Domain-Cryptography-orange?style=flat-square" />
@@ -81,34 +99,15 @@
       </p>
     </td>
     <td width="50%" valign="top">
-      <h3>️ <a href="https://github.com/hasim2006/mini-game">Mini Game Arcade</a></h3>
-      <p>Zero-dependency, high-FPS HTML5 Canvas browser arcade featuring Fruit Blade spline physics, Cyber Memory Matrix, and procedural Web Audio synthesizers.</p>
-      <p>
-        <a href="https://mini-game-arcade-tan.vercel.app"><img src="https://img.shields.io/badge/Live%20Demo-Vercel-6366F1?style=flat-square" /></a>
-        <img src="https://img.shields.io/badge/Stack-HTML5%20Canvas%20%7C%20Web%20Audio-yellow?style=flat-square" />
-      </p>
-    </td>
-  </tr>
-  <tr>
-    <td width="50%" valign="top">
-      <h3> <a href="https://github.com/hasim2006/startup-validator">Startup Validator</a></h3>
-      <p>Full-stack crowd-validation platform for discovering, evaluating, and scoring startup concepts with multi-attribute filtering and community upvoting.</p>
-      <p>
-        <a href="https://startup-validator.vercel.app"><img src="https://img.shields.io/badge/Live%20Demo-Vercel-6366F1?style=flat-square" /></a>
-        <img src="https://img.shields.io/badge/Stack-Next.js%2014%20%7C%20Prisma%20%7C%20TypeScript-blue?style=flat-square" />
-      </p>
-    </td>
-    <td width="50%" valign="top">
-      <h3> <a href="https://github.com/hasim2006/Portfolio">Developer Portfolio & Showcase</a></h3>
-      <p>Personal interactive portfolio showcasing architecture breakdowns, modern animations, telemetry stats, and full-stack projects.</p>
+      <h3>🌐 <a href="https://github.com/hasim2006/Portfolio">Futuristic 3D Portfolio</a></h3>
+      <p>Personal interactive portfolio showcasing 3D character inverse kinematics, bone-driven mouse tracking, WebAssembly chess arena, and smooth GSAP momentum motion.</p>
       <p>
         <a href="https://portfolio-website-main-livid-theta.vercel.app/"><img src="https://img.shields.io/badge/Live%20Demo-Vercel-6366F1?style=flat-square" /></a>
-        <img src="https://img.shields.io/badge/Stack-Vite%20%7C%20TypeScript%20%7C%20Tailwind-blue?style=flat-square" />
+        <img src="https://img.shields.io/badge/Stack-React%2018%20%7C%20Three.js%20%7C%20GSAP-blue?style=flat-square" />
       </p>
     </td>
   </tr>
 </table>
-
 ## GitHub Contributions & Analytics
 
 <div align="center">
