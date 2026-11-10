@@ -55,19 +55,19 @@
 <table>
   <tr>
     <td width="50%" valign="top">
-      <h3>⚡ <a href="https://github.com/hasim2006/pyredis">PyRedis Engine</a></h3>
-      <p>Zero-dependency in-memory key-value cache engine from scratch with raw TCP sockets, RESP protocol parser, O(1) LRU eviction, and AOF persistence (4,500+ ops/sec).</p>
+      <h3>🤖 <a href="https://github.com/hasim2006/smartcv-screening">SmartCV Screening AI</a></h3>
+      <p>Automated AI resume screening & candidate-job matching engine powered by Google Gemini API, NLP semantic scoring, and interactive visual analytics.</p>
       <p>
-        <img src="https://img.shields.io/badge/Domain-Systems%20Programming-blue?style=flat-square" />
-        <img src="https://img.shields.io/badge/Stack-Python%20%7C%20Asyncio%20%7C%20Raw%20TCP-blue?style=flat-square" />
+        <img src="https://img.shields.io/badge/Domain-AI%20%26%20NLP-purple?style=flat-square" />
+        <img src="https://img.shields.io/badge/Stack-Gemini%20API%20%7C%20React%20%7C%20TypeScript-blue?style=flat-square" />
       </p>
     </td>
     <td width="50%" valign="top">
-      <h3>🖥️ <a href="https://github.com/hasim2006/Nexus-OS">Nexus-OS Simulator</a></h3>
-      <p>Web-based desktop operating system simulator built with TypeScript, featuring modular window management, taskbar telemetry, and virtual filesystem.</p>
+      <h3>🚀 <a href="https://github.com/hasim2006/startup-validator">Startup Validator Platform</a></h3>
+      <p>Full-stack crowdsourcing, validation, and analytics platform for scoring startup concepts built with Next.js 14, TypeScript, Prisma ORM, and PostgreSQL.</p>
       <p>
-        <img src="https://img.shields.io/badge/Domain-Web%20OS%20Simulation-purple?style=flat-square" />
-        <img src="https://img.shields.io/badge/Stack-TypeScript%20%7C%20React%20%7C%20Virtual%20FS-blue?style=flat-square" />
+        <img src="https://img.shields.io/badge/Domain-Full--Stack%20Web-emerald?style=flat-square" />
+        <img src="https://img.shields.io/badge/Stack-Next.js%2014%20%7C%20Prisma%20%7C%20Postgres-blue?style=flat-square" />
       </p>
     </td>
   </tr>
