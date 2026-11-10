@@ -55,14 +55,6 @@
 <table>
   <tr>
     <td width="50%" valign="top">
-      <h3>🤖 <a href="https://github.com/hasim2006/autocoder-MCP">AutoCoder-MCP</a></h3>
-      <p>Autonomous sandboxed coding agent with Model Context Protocol (MCP JSON-RPC 2.0), Docker isolation, traceback-driven self-healing test loops, and live SSE telemetry.</p>
-      <p>
-        <img src="https://img.shields.io/badge/Domain-Agentic%20AI-blueviolet?style=flat-square" />
-        <img src="https://img.shields.io/badge/Stack-Python%20%7C%20Docker%20%7C%20MCP%20%7C%20FastAPI-blue?style=flat-square" />
-      </p>
-    </td>
-    <td width="50%" valign="top">
       <h3>⚡ <a href="https://github.com/hasim2006/pyredis">PyRedis Engine</a></h3>
       <p>Zero-dependency in-memory key-value cache engine from scratch with raw TCP sockets, RESP protocol parser, O(1) LRU eviction, and AOF persistence (4,500+ ops/sec).</p>
       <p>
@@ -70,22 +62,30 @@
         <img src="https://img.shields.io/badge/Stack-Python%20%7C%20Asyncio%20%7C%20Raw%20TCP-blue?style=flat-square" />
       </p>
     </td>
+    <td width="50%" valign="top">
+      <h3>🖥️ <a href="https://github.com/hasim2006/Nexus-OS">Nexus-OS Simulator</a></h3>
+      <p>Web-based desktop operating system simulator built with TypeScript, featuring modular window management, taskbar telemetry, and virtual filesystem.</p>
+      <p>
+        <img src="https://img.shields.io/badge/Domain-Web%20OS%20Simulation-purple?style=flat-square" />
+        <img src="https://img.shields.io/badge/Stack-TypeScript%20%7C%20React%20%7C%20Virtual%20FS-blue?style=flat-square" />
+      </p>
+    </td>
   </tr>
   <tr>
     <td width="50%" valign="top">
-      <h3>🛡️ <a href="https://github.com/hasim2006/PhantomGrid-Predictive-Defense-SIH26153">PhantomGrid Predictive Defense</a></h3>
-      <p>World Model-driven predictive cyber defense system forecasting network state transitions and MITRE ATT&CK progression before compromise completion. <em>(Smart India Hackathon ID: 26153)</em></p>
+      <h3>🚗 <a href="https://github.com/hasim2006/JEVDrive">JEVDrive Autonomous Simulation</a></h3>
+      <p>Autonomous highway AI driving simulation in Python featuring lane changes and speed decision-making, powered by highway-env, reinforcement learning, and Pygame.</p>
       <p>
-        <img src="https://img.shields.io/badge/Domain-Cybersecurity-red?style=flat-square" />
-        <img src="https://img.shields.io/badge/Stack-Python%20%7C%20World%20Models%20%7C%20Docker-blue?style=flat-square" />
+        <img src="https://img.shields.io/badge/Domain-Autonomous%20AI-success?style=flat-square" />
+        <img src="https://img.shields.io/badge/Stack-Python%20%7C%20Gymnasium%20%7C%20Pygame-blue?style=flat-square" />
       </p>
     </td>
     <td width="50%" valign="top">
-      <h3>🫁 <a href="https://github.com/hasim2006/PulmoGuard">PulmoGuard Medical Diagnostics</a></h3>
-      <p>Edge-native deep learning platform for pediatric & adult pneumonia triage. Powered by PyTorch ResNet-18, 98.97% sensitivity, real-time Grad-CAM explainability, and 100% air-gapped execution.</p>
+      <h3>🌍 <a href="https://github.com/hasim2006/GeoFlux">GeoFlux 3D Cinematic Engine</a></h3>
+      <p>3D Cinematic Google Maps Spec Ad & Video Generator engineered with Three.js, procedural camera trajectories, Web Audio API, and real-time routing.</p>
       <p>
-        <img src="https://img.shields.io/badge/Domain-Healthcare%20AI-success?style=flat-square" />
-        <img src="https://img.shields.io/badge/Stack-PyTorch%20%7C%20OpenCV%20%7C%20Grad--CAM-blue?style=flat-square" />
+        <img src="https://img.shields.io/badge/Domain-3D%20Graphics-cyan?style=flat-square" />
+        <img src="https://img.shields.io/badge/Stack-Three.js%20%7C%20Web%20Audio%20%7C%20GLSL-blue?style=flat-square" />
       </p>
     </td>
   </tr>
